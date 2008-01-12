@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+<struts-config>
+    <form-beans>
+        <form-bean name="AdminForm" type="com.cssc.spl.struts.form.AdminForm"/>
+        <form-bean name="LoginForm" type="com.cssc.spl.struts.form.LoginForm"/>
+        <form-bean name="RegisterForm" type="com.cssc.spl.struts.form.RegisterForm"/>
+        <form-bean name="SpecialistForm" type="com.cssc.spl.struts.form.SpecialistForm"/>
+        <form-bean name="GeneralistForm" type="com.cssc.spl.struts.form.GeneralistForm"/>
+    </form-beans>    
+    
+    <global-exceptions>    
+    </global-exceptions>
+    <global-forwards>
+    </global-forwards>
+
+    <action-mappings>
+        <action path="/index" name="LoginForm" scope="request" type="com.cssc.spl.struts.action.LoginAction">
+            <forward name="success" path="tile.index"/>
+        </action>
+        <action path="/logout" name="LoginForm" scope="request" type="com.cssc.spl.struts.action.LogoutAction">
+            <forward name="success" path="tile.index"/>
+        </action>
+        <!--Start Mappings for Admin functionalities-->
+        <action path="/admin" name="LoginForm" scope="request" type="com.cssc.spl.struts.action.LoginAction">
+            <forward name="success" path="tile.alogin"/>
+            <forward name="error" path="tile.alogin"/>
+        </action>
+        <action path="/admlogin" name="LoginForm" scope="request" type="com.cssc.spl.struts.action.LoginAction" validate="false">
+            <forward name="success" path="/lspec.spl"/>
+            <forward name="error" path="tile.alogin"/>
+        </action>        
+        <action path="/dspec" name="AdminForm" scope="session" type="com.cssc.spl.struts.action.AdminAction" validate="false">
+            <forward name="success" path="tile.lspec"/>
+            <forward name="error" path="tile.lspec"/>
+            <forward name="noaccess" path="tile.alogin"/>            
+        </action>          
+        <action path="/sspec" name="AdminForm" scope="session" type="com.cssc.spl.struts.action.AdminAction" validate="false">
+            <forward name="success" path="tile.lspec"/>
+            <forward name="error" path="tile.lspec"/>
+            <forward name="noaccess" path="tile.alogin"/>            
+        </action>      
+        <action path="/autype" name="AdminForm" scope="session" type="com.cssc.spl.struts.action.AdminAction" validate="false">
+            <forward name="success" path="tile.usertype"/>
+            <forward name="error" path="tile.usertype"/>
+            <forward name="noaccess" path="tile.alogin"/>
+        </action>  
+        <action path="/dutype" name="AdminForm" scope="session" type="com.cssc.spl.struts.action.AdminAction" validate="false">
+            <forward name="success" path="tile.usertype"/>
+            <forward name="error" path="tile.usertype"/>
+            <forward name="noaccess" path="tile.alogin"/>            
+        </action>          
+        <action path="/lutype" name="AdminForm" scope="session" type="com.cssc.spl.struts.action.AdminAction" validate="false">
+            <forward name="success" path="tile.usertype"/>
+            <forward name="error" path="tile.usertype"/>
+            <forward name="noaccess" path="tile.alogin"/>            
+        </action>
+        <action path="/sutype" name="AdminForm" scope="session" type="com.cssc.spl.struts.action.AdminAction" validate="false">
+            <forward name="success" path="tile.usertype"/>
+            <forward name="error" path="tile.usertype"/>
+            <forward name="noaccess" path="tile.alogin"/>            
+        </action>      
+        <action path="/lspec" name="AdminForm" scope="session" type="com.cssc.spl.struts.action.AdminAction" validate="false">
+            <forward name="success" path="tile.lspec"/>
+            <forward name="error" path="tile.lspec"/>
+            <forward name="noaccess" path="tile.alogin"/>            
+        </action>        
+        <action path="/uadmloc" name="AdminForm" scope="session" type="com.cssc.spl.struts.action.AdminAction" validate="false">
+            <forward name="success" path="tile.lspec"/>
+            <forward name="error" path="tile.lspec"/>
+            <forward name="noaccess" path="tile.alogin"/>
+        </action>                    
+        <!--End Mappings for Admin functionalities-->   
+        
+        <!--Start Mappings for Specialist functionalities-->
+        <action path="/spec" name="LoginForm" scope="request" type="com.cssc.spl.struts.action.LoginAction">
+            <forward name="success" path="tile.slogin"/>
+            <forward name="error" path="tile.slogin"/>
+        </action>
+        <action path="/spclogin" name="LoginForm" scope="request" type="com.cssc.spl.struts.action.LoginAction">
+            <forward name="success" path="/lspcloc.spl"/>
+            <forward name="error" path="tile.slogin"/>
+        </action>        
+        <action path="/spcreg" name="RegisterForm" scope="session" type="com.cssc.spl.struts.action.RegisterAction" validate="false">
+            <forward name="success" path="tile.spcregister"/>
+            <forward name="error" path="tile.spcregister"/>
+        </action>
+        <action path="/spcterms" name="RegisterForm" scope="request" type="com.cssc.spl.struts.action.RegisterAction" validate="false">
+            <forward name="success" path="tile.spcterms"/>
+        </action>        
+        <action path="/spcregsub" name="RegisterForm" scope="session" type="com.cssc.spl.struts.action.RegisterAction" validate="false">
+            <forward name="success" path="/spec.spl"/>
+            <forward name="error" path="tile.spcregister"/>
+        </action>        
+        <action path="/lspcloc" name="SpecialistForm" scope="session" type="com.cssc.spl.struts.action.SpecialistAction" validate="false">
+            <forward name="success" path="tile.location"/>
+            <forward name="error" path="tile.location"/>
+            <forward name="noaccess" path="tile.slogin"/>
+        </action>
+        <action path="/aspcloc" name="SpecialistForm" scope="session" type="com.cssc.spl.struts.action.SpecialistAction" validate="false">
+            <forward name="success" path="tile.location"/>
+            <forward name="error" path="tile.location"/>
+            <forward name="noaccess" path="tile.slogin"/>
+        </action>
+        <action path="/dspcloc" name="SpecialistForm" scope="session" type="com.cssc.spl.struts.action.SpecialistAction" validate="false">
+            <forward name="success" path="tile.location"/>
+            <forward name="error" path="tile.location"/>
+            <forward name="noaccess" path="tile.slogin"/>
+        </action>
+        <action path="/sspcloc" name="SpecialistForm" scope="session" type="com.cssc.spl.struts.action.SpecialistAction" validate="false">
+            <forward name="success" path="tile.location"/>
+            <forward name="error" path="tile.location"/>
+            <forward name="noaccess" path="tile.slogin"/>
+        </action>        
+        <action path="/pspcloc" name="SpecialistForm" scope="session" type="com.cssc.spl.struts.action.SpecialistAction" validate="false">
+            <forward name="success" path="tile.location"/>
+            <forward name="error" path="tile.location"/>
+            <forward name="noaccess" path="tile.slogin"/>
+        </action>    
+        <action path="/sprofile" name="SpecialistForm" scope="session" type="com.cssc.spl.struts.action.SpecialistAction" validate="false">
+            <forward name="success" path="tile.sprofile"/>
+            <forward name="error" path="tile.sprofile"/>
+            <forward name="noaccess" path="tile.slogin"/>
+        </action>            
+        <action path="/savsprofile" name="SpecialistForm" scope="session" type="com.cssc.spl.struts.action.SpecialistAction" validate="false">
+            <forward name="success" path="tile.sprofile"/>
+            <forward name="error" path="tile.sprofile"/>
+            <forward name="noaccess" path="tile.slogin"/>
+        </action>     
+        <action path="/saccinfo" name="SpecialistForm" scope="session" type="com.cssc.spl.struts.action.SpecialistAction" validate="false">
+            <forward name="success" path="tile.saccinfo"/>
+            <forward name="error" path="tile.saccinfo"/>
+            <forward name="noaccess" path="tile.slogin"/>
+        </action>             
+        <!--End Mappings for Specialist functionalities-->
+        
+        <!--Start of Generalist functionalist-->
+        <action path="/generalist" name="LoginForm" scope="request" type="com.cssc.spl.struts.action.LoginAction">
+            <forward name="success" path="tile.glogin"/>
+            <forward name="error" path="tile.glogin"/>
+        </action>
+        <action path="/genlogin" name="LoginForm" scope="request" type="com.cssc.spl.struts.action.LoginAction" validate="false">
+            <forward name="success" path="/gendwn.spl"/>
+            <forward name="error" path="tile.glogin"/>
+        </action>  
+        <action path="/genreg" name="RegisterForm" scope="session" type="com.cssc.spl.struts.action.RegisterAction" validate="false">
+            <forward name="success" path="tile.genregister"/>
+            <forward name="error" path="tile.genregister"/>
+        </action>          
+        <action path="/genregsub" name="RegisterForm" scope="session" type="com.cssc.spl.struts.action.RegisterAction" validate="false">
+            <forward name="success" path="tile.glogin"/>
+            <forward name="error" path="tile.genregister"/>
+        </action>                  
+        <action path="/gendwn" name="GeneralistForm" scope="session" type="com.cssc.spl.struts.action.GeneralistAction">
+            <forward name="success" path="tile.gdownload"/>
+            <forward name="error" path="tile.gdownload"/>
+            <forward name="noaccess" path="tile.glogin"/>
+        </action>    
+        <action path="/gendwnsub" name="GeneralistForm" scope="session" type="com.cssc.spl.struts.action.GeneralistAction">
+            <forward name="success" path="tile.gdownload"/>
+            <forward name="error" path="tile.gdownload"/>
+            <forward name="noaccess" path="tile.glogin"/>
+        </action>   
+        <action path="/filedwn" name="GeneralistForm" scope="session" type="com.cssc.spl.struts.action.GeneralistAction">
+            <forward name="success" path="tile.gdownload"/>
+            <forward name="error" path="tile.gdownload"/>
+            <forward name="noaccess" path="tile.glogin"/>
+        </action>    
+        <!--End of Generalist functionalities-->
+    </action-mappings>
+    
+    <controller  processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+
+    <message-resources parameter="com/cssc/spl/struts/properties/splproperties"/>    
+    <plug-in className="org.apache.struts.tiles.TilesPlugin">
+        <set-property property="definitions-config" value="/WEB-INF/spl_tilesdef.xml"/>
+        <set-property property="moduleAware" value="true"/>
+    </plug-in>
+</struts-config>

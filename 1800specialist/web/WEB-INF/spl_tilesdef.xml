@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+ <!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+    <definition name="default" path="/common/template.jsp">
+        <put name="header" value="/common/header.jsp"/>
+        <put name="footer" value="/common/footer.jsp"/>
+    </definition>
+    <definition name="tile.usertype" extends="default">
+        <put name="body" value="/admin/usertype.jsp"/>
+    </definition>
+    <definition name="tile.alogin" extends="default">
+        <put name="body" value="/admin/login.jsp"/>
+    </definition>
+    <definition name="tile.slogin" extends="default">
+        <put name="body" value="/specialist/login.jsp"/>
+    </definition>
+    <definition name="tile.lspec" extends="default">
+        <put name="body" value="/admin/lspecialist.jsp"/>
+    </definition>    
+    <definition name="tile.spcregister" extends="default">
+        <put name="body" value="/specialist/register.jsp"/>
+    </definition>
+    <definition name="tile.location" extends="default">
+        <put name="body" value="/specialist/location.jsp"/>
+    </definition>    
+    <definition name="tile.saccinfo" extends="default">
+        <put name="body" value="/specialist/accinfo.jsp"/>
+    </definition>        
+    <definition name="tile.sprofile" extends="default">
+        <put name="body" value="/specialist/profile.jsp"/>
+    </definition>    
+    <definition name="tile.glogin" extends="default">
+        <put name="body" value="/generalist/login.jsp"/>
+    </definition>    
+    <definition name="tile.genregister" extends="default">
+        <put name="body" value="/generalist/register.jsp"/>
+    </definition>    
+    <definition name="tile.gdownload" extends="default">
+        <put name="body" value="/generalist/download.jsp"/>
+    </definition>    
+    <definition name="tile.index" extends="default">
+        <put name="body" value="/index.jsp"/>
+    </definition>        
+    <definition name="tile.spcterms" extends="default">
+        <put name="body" value="/tnc/specterms.html"/>
+    </definition>
+</tiles-definitions>

@@ -1,0 +1,671 @@
+.inputsubtleButton {
+    BORDER-RIGHT: #666666 1px ridge; 
+    PADDING-RIGHT: 3px; 
+    BORDER-TOP: #ffffff 1px ridge; 
+    PADDING-LEFT: 3px; 
+    PADDING-BOTTOM: 3px;
+    MARGIN: 0px 3px; 
+    BORDER-LEFT: #ffffff 1px ridge; 
+    PADDING-TOP: 3px; 
+    BORDER-BOTTOM: 1px ridge; 
+    FONT-WEIGHT: bold; 
+    FONT-SIZE: 11px; 
+    WIDTH: auto; 
+    COLOR: #333333; 
+    FONT-FAMILY: Verdana; 
+    HEIGHT: auto; 
+    TEXT-DECORATION: none;
+}
+
+.sectionheader {  
+    background-color:#d2eefc;               
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.datarowborders {
+    border:1px ridge light-gray;
+}
+
+.nicetableheader {    
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 11px; 
+    font-weight:bold;
+    border:0px solid #ffffff;
+    background-image:url(../images/bgHeader.gif);
+}
+
+legend {
+        font-weight: bold;
+        color: #696;
+        padding: .2em .5em;
+        border: 1px solid #696;
+}
+
+fieldset {
+        margin: 1em 0;
+        padding: .3em 1em;
+        border: 1px solid #696;
+        font-family: Verdana,arial,sans-serif;
+        font-size: 11px;
+        font-weight:bold;
+}
+
+.inputtable {
+    border-bottom: 1px ridge;
+    border-left: 1px ridge;
+    border-right: 1px ridge;
+}
+
+.inputsubtable {
+  
+}
+
+tr {
+   vertical-align: top
+}
+
+.menuRow{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	background-color:#d2eefc;
+}
+
+.dataGridRowLight{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	background-color:#FFFFFF;
+}
+
+.dataGridRowLight:hover{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	background-color:#a7e2ff;
+}
+
+.dataGridRowDark{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	background-color:#F8F8F8;
+}
+
+.dataGridRowDark:hover{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	background-color:#a7e2ff;
+}
+
+.colorChange {
+    FONT-WEIGHT: bold; 
+    FONT-SIZE: 7px; 
+    TEXT-ALIGN: left;
+    color: #33b;
+}
+
+a:link, a:active, a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.checkboxcolorChange {
+    background-color: #33b;
+    color = #FF;
+}
+.bgblue {
+	background-color: #6495ed;	
+}
+.bgerror {
+	background-color: #FF9912;
+}
+.bgwhite {
+	background-color: white;
+}
+.style1 {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px
+}
+.style3 {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; 
+}
+.altLineBgColor {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 11px; COLOR: #000000; BACKGROUND-COLOR: #f2f2f2
+}
+.altRowResultsLeft {
+	FONT-SIZE: 11px; COLOR: #000000; BACKGROUND-COLOR: #ebe6ec; TEXT-ALIGN: left
+}
+.alertSubscriptionToolTip {
+	BORDER-RIGHT: #000000 1px solid; PADDING-RIGHT: 2px; BORDER-TOP: #000000 1px solid; DISPLAY: none; PADDING-LEFT: 2px; FONT-SIZE: 11px; PADDING-BOTTOM: 2px; BORDER-LEFT: #000000 1px solid; WIDTH: 350px; PADDING-TOP: 2px; BORDER-BOTTOM: #000000 1px solid; POSITION: absolute; BACKGROUND-COLOR: #ffffdf
+}
+.bannerBgColor {
+	BACKGROUND-COLOR: #999999
+}
+.bgColorWhite {
+	BACKGROUND-COLOR: #FFFFFF;
+}
+.blueBoxText {
+	FONT-SIZE: 11px; COLOR: #000000; BACKGROUND-COLOR: #d9d9ff; TEXT-DECORATION: none
+}
+body {
+    FONT-SIZE: 11px; 
+    MARGIN: 0px; 
+    FONT-FAMILY: Verdana, Arial, Tahoma, Helvetica, sans-serif;
+    background-color:#FFFFFF;
+}
+.bottomNav {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; COLOR: #ffffff
+}
+.bottomNavL {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; COLOR: #ffffff; TEXT-DECORATION: underline
+}
+.botBgColor {
+	BACKGROUND-COLOR: #333333
+}
+.boxBgColor {
+	BACKGROUND-COLOR: #eaeaea
+}
+.button {
+	BORDER-RIGHT: #666666 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: #ffffff 1px solid; PADDING-LEFT: 3px; FONT-WEIGHT: bold; FONT-SIZE: 11px; PADDING-BOTTOM: 3px; MARGIN: 0px 3px; BORDER-LEFT: #ffffff 1px solid; WIDTH: 100px; COLOR: #333333; PADDING-TOP: 3px; BORDER-BOTTOM: #666666 1px solid; FONT-FAMILY: Verdana; HEIGHT: 20px; BACKGROUND-COLOR: #d3d0c8; TEXT-DECORATION: none
+}
+.buttonSmall {
+	BORDER-RIGHT: #666666 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: #ffffff 1px solid; PADDING-LEFT: 3px; FONT-WEIGHT: bold; FONT-SIZE: 11px; PADDING-BOTTOM: 3px; MARGIN: 0px 3px; BORDER-LEFT: #ffffff 1px solid; WIDTH: 38px; COLOR: #333333; PADDING-TOP: 3px; BORDER-BOTTOM: #666666 1px solid; FONT-FAMILY: Verdana; HEIGHT: 20px; BACKGROUND-COLOR: #d3d0c8; TEXT-DECORATION: none
+}
+.buttonMedium {
+	BORDER-RIGHT: #666666 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: #ffffff 1px solid; PADDING-LEFT: 3px; FONT-WEIGHT: bold; FONT-SIZE: 11px; PADDING-BOTTOM: 3px; MARGIN: 0px 3px; BORDER-LEFT: #ffffff 1px solid; WIDTH: 50px; COLOR: #333333; PADDING-TOP: 3px; BORDER-BOTTOM: #666666 1px solid; FONT-FAMILY: Verdana; HEIGHT: 20px; BACKGROUND-COLOR: #d3d0c8; TEXT-DECORATION: none
+}
+.contentBgColor {
+	BACKGROUND-COLOR: #6c84a8
+}
+.contentHeading {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px;
+}
+.copyrightLine {
+	FONT-SIZE: 11px; COLOR: #ffffff; TEXT-ALIGN: center
+}
+.copyRow {
+	BACKGROUND: #6495ed
+}
+.collaborationHRColor {
+	COLOR: #d4d4d4
+}
+.criteriaValue {
+	FONT: 9pt Verdana, Helvetica, sans-serif;
+        height :15pt ;
+  vertical-align : middle;
+}
+.criteriaValueDisable {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; BACKGROUND-COLOR: #cccccc
+}
+.DarkBlueBgColor {
+	COLOR: #ffffff; BACKGROUND-COLOR: #003399
+}
+.darkEdgeLineColor {
+	BORDER-LEFT-COLOR: #666666; BORDER-BOTTOM-COLOR: #666666; BORDER-TOP-COLOR: #666666; BACKGROUND-COLOR: #666666; BORDER-RIGHT-COLOR: #666666
+}
+.dataTableMandatoryField {
+	BORDER-RIGHT: #ff6600 2px solid; BORDER-TOP: #ff6600 2px solid; FONT: 11px Arial, Helvetica, sans-serif; BORDER-LEFT: #ff6600 2px solid; BORDER-BOTTOM: #ff6600 2px solid
+}
+.dataTableMandatoryFieldCell {
+	BORDER-RIGHT: #ff6600 2px solid; BORDER-TOP: #ff6600 2px solid; FONT: 11px Arial, Helvetica, sans-serif; BORDER-LEFT: #ff6600 2px solid; BORDER-BOTTOM: #ff6600 2px solid
+}
+.dataTableRowGrayRightAlign {
+	FONT-SIZE: 7px; COLOR: #000000; BACKGROUND-COLOR: #ebe6ec; TEXT-ALIGN: right
+}
+.dataTableRowGrayCenterAlign {
+	FONT-SIZE: 7px; COLOR: #000000; BACKGROUND-COLOR: #ebe6ec; TEXT-ALIGN: center
+}
+.dataTableRowGrayLeftAlign {
+	FONT-SIZE: 7px; COLOR: #000000; BACKGROUND-COLOR: #dddddd; TEXT-ALIGN: left
+}
+.dataTableRowWhiteRightAlign {
+	FONT-SIZE: 7px; COLOR: #000000; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: right
+}
+.dataTableRowWhiteCenterAlign {
+	FONT-SIZE: 7px; COLOR: #000000; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: center
+}
+.dataTableRowWhiteLeftAlign {
+	FONT-SIZE: 7px; COLOR: #000000; BACKGROUND-COLOR: #eeeeee; TEXT-ALIGN: left
+}
+.dataTableHeader {
+	BORDER-RIGHT: #ccc 0.05em solid; BORDER-TOP: #ccc 0.05em solid; BORDER-LEFT: #ccc 0.05em solid; BORDER-BOTTOM: #ccc 0.05em solid; FONT-WEIGHT: bold; FONT-SIZE: 7px; VERTICAL-ALIGN: top; COLOR: #ffffff; BACKGROUND-COLOR: #999999; TEXT-ALIGN: center
+}
+.dataTableHeaderCenterAlign {
+	FONT-WEIGHT: bold; FONT-SIZE: 7px; VERTICAL-ALIGN: top; HORIZONTAL-ALIGN: center; COLOR: #ffffff; BACKGROUND-COLOR: #999999; TEXT-ALIGN: center
+}
+.dataTableHeaderCenterAlignText {
+	FONT-WEIGHT: bold; FONT-SIZE: 7px; VERTICAL-ALIGN: top; HORIZONTAL-ALIGN: center; COLOR: #ffffff; BACKGROUND-COLOR: #23238E; TEXT-ALIGN: center
+}
+.dataTableHeaderCenterAlignBottom {
+	FONT-WEIGHT: bold; FONT-SIZE: 7px; VERTICAL-ALIGN: bottom; HORIZONTAL-ALIGN: center; COLOR: #ffffff; BACKGROUND-COLOR: #999999; TEXT-ALIGN: center
+}
+.dataTableHeaderCenterAlignBottomText {
+	FONT-WEIGHT: bold; FONT-SIZE: 7px; VERTICAL-ALIGN: bottom; HORIZONTAL-ALIGN: center; COLOR: #ffffff; BACKGROUND-COLOR: #23238E; TEXT-ALIGN: center
+}
+.dataTableHeaderLeftAlign {
+	FONT-WEIGHT: bold; FONT-SIZE: 7px; VERTICAL-ALIGN: top; COLOR: #ffffff; BACKGROUND-COLOR: #999999; TEXT-ALIGN: left
+}
+.dataTableHeaderLeftBlueAlign {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; VERTICAL-ALIGN: top; COLOR: #ffffff; TEXT-ALIGN: left
+}
+.dataTableSubheaderWhiteCenterAlignAPL {
+	FONT-WEIGHT: normal; FONT-SIZE: 7px; VERTICAL-ALIGN: top; FONT-FAMILY: Verdana, Arial, Helvetica; BACKGROUND-COLOR: #c6c6ff; TEXT-ALIGN: center
+}
+.dateToolTip {
+	BORDER-RIGHT: #000000 1px solid; PADDING-RIGHT: 2px; BORDER-TOP: #000000 1px solid; DISPLAY: none; PADDING-LEFT: 2px; FONT-SIZE: 11px; PADDING-BOTTOM: 2px; BORDER-LEFT: #000000 1px solid; PADDING-TOP: 2px; BORDER-BOTTOM: #000000 1px solid; POSITION: absolute; BACKGROUND-COLOR: #ffffdf
+}
+.editRow {
+	BACKGROUND: #6495ed
+}
+.errorMessage {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #ffffff
+}
+.errorRow {
+	PADDING-LEFT: 20px; BACKGROUND: #ffffff; PADDING-BOTTOM: 1px; FONT: 11px Verdana, Arial, Helvetica, sans-serif; COLOR: red; PADDING-TOP: 1px
+}
+.emptyRow {
+	HEIGHT: 15px
+}
+.exceptionRowSelect {
+	FONT-SIZE: 11px; CURSOR: hand; COLOR: #000000; BACKGROUND-COLOR: #c6c6ff
+}
+.elementHide {
+	DISPLAY: none
+}
+FORM {
+	MARGIN: 0px
+}
+.grayBar {
+	BACKGROUND: #cccccc
+}
+.headerBgColor {
+	BACKGROUND-COLOR: #c0c0c0
+}
+.headerLink {
+	FONT-WEIGHT: bold; FONT-SIZE: 12pt
+}
+.headerLinks {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; CURSOR: hand; COLOR: #003399; TEXT-DECORATION: underline
+}
+.headerText {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-WEIGHT: normal; FONT-SIZE: 11px; TEXT-ALIGN: left
+}
+.helpSubject {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #000000
+}
+.homeBackground {
+	BACKGROUND-COLOR: #ffffff
+}
+.instructions {
+	FONT-SIZE: 11px; COLOR: #000000
+}
+.inputTextBox {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px
+}
+.largeFontMultiSelect {
+	FONT-WEIGHT: normal; FONT-SIZE: 12px; WIDTH: 200px
+}
+.label {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-WEIGHT: normal; FONT-SIZE: 11px; TEXT-ALIGN: right
+}
+.labelBlue {
+	FONT-SIZE: 11px; COLOR: #003399
+}
+.labelButton {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; FONT-FAMILY: Verdana; TEXT-ALIGN: center
+}
+.labelCenter {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-WEIGHT: bold; FONT-SIZE: 11px; TEXT-ALIGN: center
+}
+.labelLeft {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-WEIGHT: normal; FONT-SIZE: 11px; TEXT-ALIGN: left
+}
+.labelMultiSelectSmall {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; WIDTH: 84px
+}
+.labelMultiSelectMedium {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; WIDTH: 140px
+}
+.labelMultiSelectLarge {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; WIDTH: 100px
+}
+.labelRight {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-WEIGHT: normal; FONT-SIZE: 11px; TEXT-ALIGN: right
+}
+.labelText {
+	FONT-SIZE: 10pt
+}
+.labelTextBlack {
+	FONT-SIZE: 11px; COLOR: #000000; TEXT-DECORATION: none
+}
+.labelTextRedRight {
+	FONT-SIZE: 11px; COLOR: red; TEXT-DECORATION: none; TEXT-ALIGN: right
+}
+.labelTextBlack:hover {
+	COLOR: #000000; TEXT-DECORATION: none
+}
+.labelTextBlue {
+	FONT-WEIGHT: normal; COLOR: blue; TEXT-DECORATION: underline
+}
+.labelTextBlue:hover {
+	COLOR: #9d0000; TEXT-DECORATION: none
+}
+.labelTextBlueLarge {
+	FONT-SIZE: 17px; COLOR: blue
+}
+.labelTextBold {
+	FONT-WEIGHT: bold
+}
+.labelTextBoldSmall {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; FONT-FAMILY: Verdana
+}
+.labelTextDarkGray {
+	FONT-WEIGHT: bold; COLOR: #666666
+}
+.labelTextGray {
+	FONT-WEIGHT: bold; COLOR: #999999
+}
+.labelTextGreenLarge {
+	FONT-SIZE: 24px; COLOR: green
+}
+.labelTextNavy {
+	FONT-SIZE: 11px; COLOR: navy; FONT-WEIGHT: bold;
+}
+.labelTextRed {
+	COLOR: red
+}
+.labelTextRedBold {
+	FONT-WEIGHT: bold; COLOR: red
+}
+.labelTextWhite {
+	FONT-SIZE: 12px; COLOR: white; TEXT-DECORATION: none
+}
+.labelTableColumn {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #330066
+}
+.listboxControlButton {
+	BORDER-RIGHT: #666666 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: #ffffff 1px solid; PADDING-LEFT: 3px; FONT-WEIGHT: bold; FONT-SIZE: 11px; PADDING-BOTTOM: 3px; VERTICAL-ALIGN: middle; BORDER-LEFT: #ffffff 1px solid; WIDTH: 80px; COLOR: #333333; PADDING-TOP: 3px; BORDER-BOTTOM: #666666 1px solid; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; HEIGHT: 20px; BACKGROUND-COLOR: #d3d0c8; TEXT-DECORATION: none
+}
+.minorText {
+	FONT-SIZE: 6px; COLOR: #000000
+}
+.minorPlus {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #000000
+}
+.msgText {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #0099cc; TEXT-ALIGN: center
+}
+.miscellaneous {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; BACKGROUND-COLOR: #cccccc; TEXT-ALIGN: left
+}
+.ninePTBlue {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; COLOR: #0000ff; TEXT-ALIGN: right
+}
+.noEditRow {
+	BACKGROUND: #ffffff
+}
+.outsideEdgeBgColor {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px; BACKGROUND-COLOR: #cccccc
+}
+.pageHeader {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: #000000; LINE-HEIGHT: 110pt
+}
+.pageTitle {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 6px; FONT-WEIGHT: bold; FONT-SIZE: 12px; PADDING-BOTTOM: 0px; COLOR: #ffffff; PADDING-TOP: 0px; FONT-STYLE: normal; HEIGHT: 40px; BACKGROUND-COLOR: #330099; TEXT-DECORATION: none
+}
+.portletHeading {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #ffffff; LINE-HEIGHT: 14px; BACKGROUND-COLOR: #0099cc
+}
+.portletBanner {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #0099cc
+}
+.portletHeader {
+	FONT-WEIGHT: bold; COLOR: #0099cc
+}
+.portletContent {
+	FONT-SIZE: 9pt
+}
+.portletFooter {
+	FONT-SIZE: 11px; BACKGROUND-COLOR: #eeeeee
+}
+.priorityHigh {
+	FONT-WEIGHT: bold; COLOR: red
+}
+.redCriteriaDataLabels {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: red; TEXT-ALIGN: left
+}
+.redCriteriaData {
+	FONT: 11px Arial, Helvetica, sans-serif;COLOR: red; TEXT-ALIGN: left
+}
+.reportConstraintsLinks {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; CURSOR: hand; COLOR: #0000ff; TEXT-ALIGN: right; TEXT-DECORATION: underline
+}
+.resetLink {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; CURSOR: hand; COLOR: #0000ff; TEXT-ALIGN: right; TEXT-DECORATION: underline
+}
+.rowResults {
+	FONT-SIZE: 11px; COLOR: #000000; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: center
+}
+.rowResultsLeft {
+	FONT-SIZE: 11px; COLOR: #000000; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: left
+}
+.rectbox {
+	WIDTH: 11px; HEIGHT: 11px
+}
+.screenTitle {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #ffffff; BACKGROUND-COLOR: #999999; TEXT-ALIGN: left
+}
+.screenTitleBlue {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #ffffff; BACKGROUND-COLOR: #004897; TEXT-ALIGN: left
+}
+.searchKeepBlue {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #0000ff; TEXT-ALIGN: right
+}
+.searchSubarRight {
+	FONT-SIZE: 11px; COLOR: #000000; BACKGROUND-COLOR: #ebe6ec; TEXT-ALIGN: right
+}
+.selectListMedium {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; WIDTH: 225px
+}
+.selectListWide {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; WIDTH: 300px
+}
+.smallText {
+	FONT-WEIGHT: bold; FONT-SIZE: 4px
+}
+.spacerRow {
+	HEIGHT: 11px; BACKGROUND-COLOR: white
+}
+.searchKeepBlueAPL {
+	FONT-WEIGHT: bold; FONT-SIZE: 7px; COLOR: #0000ff
+}
+.searchResultsByPage {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; TEXT-ALIGN: center
+}
+.specCriteriaTextBar {
+	FONT-WEIGHT: bold; FONT-SIZE: 7px; BACKGROUND-COLOR: #d4d4d4; TEXT-ALIGN: left
+}
+.specCriteriaDataLabelsNoAlign {
+	FONT-SIZE: 10pt
+}
+.specCriteriaTextLabels {
+    FONT-SIZE: 11px; TEXT-ALIGN: left
+}
+.specCriteriaTextCenterLabels {
+	FONT-WEIGHT: bold; FONT-SIZE: 7px; TEXT-ALIGN: center
+}
+.specCriteriaTextCenterNewLabels {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; BACKGROUND-COLOR: #FF7F00; TEXT-ALIGN: center	
+}
+.specCriteriaDataLabels {
+	FONT-SIZE: 7px; TEXT-ALIGN: left
+}
+.specCriteriaTextLabelsRight {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; TEXT-ALIGN: right
+}
+.specCriteriaTextLabelsLeft {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; TEXT-ALIGN: left
+}
+.specCriteriaTextRight {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; TEXT-ALIGN: right
+}
+.specCriteriaDataLabelsLeft {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; TEXT-ALIGN: left
+}
+.subtleButton {
+	BORDER-RIGHT: #666666 1px solid; 
+        PADDING-RIGHT: 3px; 
+        BORDER-TOP: #ffffff 1px solid; 
+        PADDING-LEFT: 3px; 
+        FONT-WEIGHT: bold; FONT-SIZE: 11px; 
+        PADDING-BOTTOM: 3px; 
+        MARGIN: 0px 3px; BORDER-LEFT: #ffffff 1px solid; WIDTH: auto; COLOR: #333333; PADDING-TOP: 3px; BORDER-BOTTOM: #666666 1px solid; FONT-FAMILY: Verdana; HEIGHT: auto; BACKGROUND-COLOR: #d3d0c8; TEXT-DECORATION: none;
+}
+.subtleSmallButton {
+    BORDER-RIGHT: #666666 1px solid;
+    BORDER-TOP: #ffffff 1px solid; 
+    FONT-WEIGHT: bold; 
+    FONT-SIZE: 11px; 
+    BORDER-LEFT: #ffffff 1px solid; 
+    WIDTH: auto; 
+    COLOR: #333333; 
+    BORDER-BOTTOM: #666666 1px solid; 
+    FONT-FAMILY: Verdana; 
+    HEIGHT: auto; 
+    BACKGROUND-COLOR: #d3d0c8; 
+    TEXT-DECORATION: none;
+}
+.successMessage {
+	COLOR: green
+}
+TABLE.saveSearch {
+	BACKGROUND-COLOR: #b5f9eb
+}
+TD {
+	FONT-FAMILY: Verdana, Arial, Tahoma, Helvetica, sans-serif
+}
+.tableNextAction {
+	BORDER-LEFT-COLOR: #666666; BORDER-BOTTOM-COLOR: #666666; BORDER-TOP-COLOR: #666666; BACKGROUND-COLOR: #cccccc; BORDER-RIGHT-COLOR: #666666
+}
+.tabSelected {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; VERTICAL-ALIGN: middle; COLOR: white; BACKGROUND-COLOR: #026f93; TEXT-DECORATION: none
+}
+.tabUnselected {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; VERTICAL-ALIGN: middle; COLOR: #026f93; BACKGROUND-COLOR: white; TEXT-DECORATION: none
+}
+.tableHeader {
+	BACKGROUND: #000000; FONT: bold 10pt/10pt arial, Verdana, sans-serif; COLOR: white
+}
+.tabRowOff {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; BACKGROUND-COLOR: #e0e0e0; TEXT-ALIGN: center
+}
+.tabRowOn {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; BACKGROUND-COLOR: #cccccc; TEXT-ALIGN: center
+}
+.textareaValue {
+	FONT-WEIGHT: normal; FONT-SIZE: 10pt
+}
+.textHeader {
+	FONT: bold 9pt/12pt Verdana, arial, sans-serif
+}
+.titleText {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-WEIGHT: bold; FONT-SIZE: 15px; COLOR: white; TEXT-ALIGN: left
+}
+.titleBgColor {
+	BACKGROUND-COLOR: navy
+}
+.totalRow {
+	BACKGROUND: #cccccc
+}
+UL {
+	MARGIN-TOP: 0px; COLOR: #fc6c04; LIST-STYLE-TYPE: circle
+}
+UL.twf {
+	MARGIN-TOP: 0px; FONT-SIZE: 11px; COLOR: #000000; LIST-STYLE-TYPE: disc
+}
+.utilities {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: #003399; TEXT-DECORATION: underline
+}
+.visibilityTitleBar {
+	BORDER-RIGHT: #6699cc 1px solid; BORDER-TOP: #6699cc 1px solid; FONT-WEIGHT: bold; FONT-SIZE: 11px; BORDER-LEFT: #6699cc 1px solid; COLOR: #ffffff; LINE-HEIGHT: 14px; BORDER-BOTTOM: #666666 1px solid; BACKGROUND-COLOR: #6699cc
+}
+.whiteHeadLine {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: #ffffff
+}
+.whiteLineBgColor {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-SIZE: 11px; COLOR: #000000; BACKGROUND-COLOR: #ffffff
+}
+INPUT.but {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; WIDTH: 35px; FONT-FAMILY: Arial
+}
+TD.template {
+	FONT-SIZE: 12px; FONT-FAMILY: Verdana
+}
+.heading {
+	FONT-WEIGHT: bold; COLOR: #ffffff; BACKGROUND-COLOR: #336699
+}
+.properties {
+	FONT-WEIGHT: bold; COLOR: #ffffff; BACKGROUND-COLOR: #0099cc
+}
+.selectList {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; WIDTH: 225px
+}
+.templateListboxControlButton {
+	BORDER-RIGHT: #666666 1px solid; BORDER-TOP: #ffffff 1px solid; FONT-WEIGHT: bold; FONT-SIZE: 11px; VERTICAL-ALIGN: middle; BORDER-LEFT: #ffffff 1px solid; WIDTH: 80px; COLOR: #333333; BORDER-BOTTOM: #666666 1px solid; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; HEIGHT: 20px; TEXT-DECORATION: none
+}
+.templateControlButton {
+	BORDER-RIGHT: #666666 1px solid; BORDER-TOP: #ffffff 1px solid; FONT-WEIGHT: bold; FONT-SIZE: 11px; VERTICAL-ALIGN: middle; BORDER-LEFT: #ffffff 1px solid; WIDTH: 120px; COLOR: #333333; BORDER-BOTTOM: #666666 1px solid; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; HEIGHT: 20px; TEXT-DECORATION: none
+}
+.labelOnGrayBg {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; FONT-WEIGHT: normal; FONT-SIZE: 11px; TEXT-ALIGN: left
+}
+.selectFilterList {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; WIDTH: 300px
+}
+.templateCriteriaValue {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; FONT-FAMILY: Verdana; BACKGROUND-COLOR: #ffffff
+}
+.templateErrMsg {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; COLOR: #ff0000; FONT-FAMILY: Verdana; TEXT-ALIGN: center
+}
+.specCriteriaSummaryTextLabels {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; TEXT-ALIGN: right
+}
+.specCriteriaSummaryTextLabelsLeft {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; TEXT-ALIGN: left
+}
+.specCriteriaSummaryText {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; TEXT-ALIGN: right
+}
+.specCriteriaSummaryDataLabels {
+	FONT-SIZE: 11px; TEXT-ALIGN: left
+}
+.specriteriatextlabels {
+	FONT-WEIGHT: bold; FONT-SIZE: 11px; FONT-FAMILY: Arial, Verdana, Helvetica; TEXT-ALIGN: right
+}
+.summaryDataTableRowGrayLeftAlign {
+	FONT-SIZE: 11px; COLOR: #000000; BACKGROUND-COLOR: #ebe6ec; TEXT-ALIGN: left
+}
+.summaryDataTableRowWhiteLeftAlign {
+	FONT-SIZE: 11px; COLOR: #000000; BACKGROUND-COLOR: #ffffff; TEXT-ALIGN: left
+}
+.row1 {
+	BACKGROUND-COLOR: white
+}
+.ListBoxfieldcolor {
+	BORDER-RIGHT: 1px; BORDER-TOP: 1px; FONT-SIZE: 11px; WORD-SPACING: 11px; BORDER-LEFT: 1px; WIDTH: 300px; BORDER-BOTTOM: 1px; LETTER-SPACING: 1px
+}
+.pIdLike_FindOutMore {
+	FONT-WEIGHT: normal; FONT-SIZE: 11px; COLOR: #333333; TEXT-DECORATION: none
+}
+.pIdLike_FindOutMore:hover {
+	FONT-SIZE: 11px; COLOR: #003399; TEXT-DECORATION: underline
+}
+.deleteRow {
+	BACKGROUND: #cccccc
+}
+.radioButton {
+	width: 12px;
+	height: 11px;
+}

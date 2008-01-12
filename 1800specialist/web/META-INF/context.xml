@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/1800specialist">
+  <Logger className="org.apache.catalina.logger.FileLogger" prefix="1800specialist." suffix=".log" timestamp="true"/>
+</Context>
