@@ -86,13 +86,17 @@ public class AdminAction extends CommonAction {
                 saveMessages(request, messages);
                 return forward;
             }            
+            UserVO userVO = (UserVO) adminProfileObj;
+            String firstName = userVO.getFirstName();
+            String lastName = userVO.getLastName();
+            adminForm.setDisplayname(firstName + " " + lastName);
             adminForm.setLogout(false);
             if (LIST_SPEC_MAP.equals(path)) {
                 messages = handleListSpecialists (adminForm, request);
-                UserVO userVO = new UserVO ();
+                UserVO uservo = new UserVO ();
                 userVO.setUserType(SPEC);
                 AdminBO adminBO = new AdminBO ();
-                UserVO[] userVOs = adminBO.fetchUsers (userVO);
+                UserVO[] userVOs = adminBO.fetchUsers (uservo);
                 adminForm.setUserVOs (userVOs);
                 forward = mapping.findForward(SUCCESS);
             }
@@ -100,8 +104,7 @@ public class AdminAction extends CommonAction {
                 messages = handleDeleteSpecialists (adminForm, request);
                 forward = mapping.findForward(SUCCESS);
             }
-            if (SAVE_SPEC_MAP.equals(path)) {
-                UserVO userVO = (UserVO) adminProfileObj;
+            if (SAVE_SPEC_MAP.equals(path)) {                
                 messages = handleSaveSpecialists (adminForm, request, userVO);
                 forward = mapping.findForward(SUCCESS);
             }            
@@ -118,7 +121,6 @@ public class AdminAction extends CommonAction {
                 forward = mapping.findForward(SUCCESS);
             }
             if (SAVE_USERTYPE_MAP.equals (path)) {
-                UserVO userVO = (UserVO) adminProfileObj;
                 messages = handleSaveUserType(adminForm, request, userVO.getUsername());
                 forward = mapping.findForward(SUCCESS);
             }
@@ -126,7 +128,6 @@ public class AdminAction extends CommonAction {
                 errors = adminForm.validate(mapping, request);
                 logger.debug("After Validating File: " + errors.isEmpty());
                 if (errors.isEmpty()) {
-                    UserVO userVO = (UserVO) adminProfileObj;
                     messages = handleUploadFile (adminForm, request, userVO);
                     forward = mapping.findForward(SUCCESS);
                 } else {

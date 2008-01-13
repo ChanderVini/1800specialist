@@ -2,7 +2,7 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
 <title><bean:message key="label.generalist"/>&nbsp;<bean:message key="label.download"/></title>
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<table cellspacing="0" cellpadding="0" border="0" width="100%">    
     <tr>
         <td width="2%">&nbsp;</td>
         <td width="900">

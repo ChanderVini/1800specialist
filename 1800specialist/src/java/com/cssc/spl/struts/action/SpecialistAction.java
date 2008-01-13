@@ -93,9 +93,12 @@ public class SpecialistAction extends CommonAction {
                 saveMessages(request, messages);
                 return forward;
             }       
+            UserVO userVO = (UserVO) specProfileObj;
+            String firstName = userVO.getFirstName();
+            String lastName = userVO.getLastName();
+            specialistForm.setDisplayname(firstName + " " + lastName);
             specialistForm.setLogout(false);
-            if (SPEC_INFO_MAP.equals(path)) {
-                UserVO userVO = (UserVO) specProfileObj;
+            if (SPEC_INFO_MAP.equals(path)) {                
                 messages = handleAccountInformation (specialistForm, request, userVO);
                 forward = mapping.findForward(SUCCESS);
             }
@@ -109,19 +112,16 @@ public class SpecialistAction extends CommonAction {
                 forward = mapping.findForward(SUCCESS);
             }
             if (DELETE_LOCATION_MAP.equals (path)) {
-                UserVO userVO = (UserVO) specProfileObj;
                 messages = handleDeleteLocations (specialistForm, request, userVO);
                 forward = mapping.findForward(SUCCESS);
             }
             if (LIST_LOCATION_MAP.equals (path)) {
-                UserVO userVO = (UserVO) specProfileObj;
                 messages = handleListLocations (specialistForm, request, userVO);
                 forward = mapping.findForward(SUCCESS);
             }
             if (PAY_LOCATION_MAP.equals (path)) {
                 errors = specialistForm.validate(mapping, request);
                 if (errors.isEmpty()) {
-                    UserVO userVO = (UserVO) specProfileObj;
                     messages = handlePayLocations (specialistForm, request, userVO);
                     forward = mapping.findForward(SUCCESS);
                 } else {
@@ -131,7 +131,6 @@ public class SpecialistAction extends CommonAction {
             if (SAVE_LOCATION_MAP.equals(path)) {
                 errors = specialistForm.validate(mapping, request);
                 if (errors.isEmpty()) {
-                    UserVO userVO = (UserVO) specProfileObj;
                     messages = handleSaveLocations (specialistForm, request, userVO);
                     forward = mapping.findForward(SUCCESS);
                 } else {
@@ -141,7 +140,6 @@ public class SpecialistAction extends CommonAction {
             if (SPEC_SAVE_MAP.equals (path)) {
                 errors = specialistForm.validate(mapping, request);
                 if (errors.isEmpty()) {
-                    UserVO userVO = (UserVO) specProfileObj;
                     messages = handleSaveSpecProfile (specialistForm, request, userVO);
                     forward = mapping.findForward(SUCCESS);
                 } else {
@@ -196,7 +194,6 @@ public class SpecialistAction extends CommonAction {
                 }
             }
             if (SPEC_PROFILE_MAP.equals (path)) {
-                UserVO userVO = (UserVO) specProfileObj;
                 specialistForm.setUserVO(userVO);
                 forward = mapping.findForward(SUCCESS);
             }
@@ -484,11 +481,13 @@ public class SpecialistAction extends CommonAction {
             String userId = userVO.getUsername();
             paymentBO.savePaymentDetails(paymentVOs, userId);
             if (responseCode == 1) {
-                GregorianCalendar cal = new GregorianCalendar ();
-                long timeinmillis = cal.getTimeInMillis();
+               GregorianCalendar cal = new GregorianCalendar ();
+                cal.set(Calendar.DATE, 1);
+                cal.add (Calendar.MONTH, 1);
+                long timeinmillis = cal.getTimeInMillis();        
                 Date startDate = new Date (timeinmillis);
                 cal.set(Calendar.DATE, 1);
-                cal.add(Calendar.MONTH, 1);
+                cal.add(Calendar.MONTH, 25);
                 Date endDate = new Date (cal.getTimeInMillis());
                 for (int cnt = 0; cnt < saveLocationVOs.length; cnt++) {
                     saveLocationVOs[cnt].setStatus(ACTV);

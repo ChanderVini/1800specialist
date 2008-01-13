@@ -4,6 +4,10 @@
 <%@ taglib uri="/WEB-INF/struts-nested.tld" prefix="nested"%>
 <title><bean:message key="label.speclist"/></title>
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr height="15">
+        <td width="2%">&nbsp;</td>
+        <td class="labelLeft"><b>Welcome: <bean:write name="AdminForm" property="displayname"/></b></td>
+    </tr>        
     <tr>
         <td width="2%">&nbsp;</td>
         <td width="900">

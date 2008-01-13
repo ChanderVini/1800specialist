@@ -74,15 +74,14 @@ public class GeneralistAction extends CommonAction {
                 saveMessages(request, messages);
                 return forward;
             }  
+            GeneralistVO generalistVO = (GeneralistVO) genProfileObj;
             generalistForm.setLogout(false);
-            if (GEN_DOWN_MAP.equals(path)) {
-                GeneralistVO generalistVO = (GeneralistVO) genProfileObj;
+            if (GEN_DOWN_MAP.equals(path)) {                
                 messages = handleFetchDownload (generalistForm, request, generalistVO);
                 forward = mapping.findForward(SUCCESS);
             }         
             
             if (GEN_DOWN_SUB_MAP.equals(path)) {
-                GeneralistVO generalistVO = (GeneralistVO) genProfileObj;
                 messages = handleFileDownload (generalistForm, request, generalistVO);
                 logger.debug("Messgaes are Empty? " + messages.isEmpty());
                 if (!messages.isEmpty()) {

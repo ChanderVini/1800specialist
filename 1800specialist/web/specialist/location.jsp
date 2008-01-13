@@ -10,10 +10,14 @@
     reccuringamt = <bean:write name="SpecialistForm" property="recurringFee"/>;
     setupfee = <bean:write name="SpecialistForm" property="setupFee"/>;
 </script>
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<table cellspacing="0" cellpadding="0" border="0" width="1250">
+    <tr height="15">
+        <td width="2%">&nbsp;</td>
+        <td class="labelLeft"><b>Welcome: <bean:write name="SpecialistForm" property="displayname"/></b></td>
+    </tr>            
     <tr>
         <td width="2%">&nbsp;</td>
-        <td width="950">
+        <td width="98%">
             <div class="tabberlive">
                 <ul class="tabbernav">    
                     <logic:equal name="SpecialistForm" property="logout" value="false">
@@ -40,7 +44,7 @@
     <tr>
         <td width="2%">&nbsp;</td>
         <td valign="top">
-            <table cellspacing="0" cellpadding="0" border="0" class="inputtable" width="950">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0" class="inputtable">
                 <logic:messagesPresent name="errors" message="true">
                     <tr>
                         <td class="labelLeft" colspan="2" valign="top">
@@ -79,31 +83,31 @@
                                     </td>
                                 </tr>                                
                                 <tr>
-                                    <th class="nicetableheader">
+                                    <th class="nicetableheader" width="20">
                                         &nbsp;
                                     </th>
-                                    <th class="nicetableheader">
+                                    <th class="nicetableheader" width="136">
                                         <bean:message key="label.name"/>
                                     </th>
-                                    <th class="nicetableheader">
+                                    <th class="nicetableheader" width="70">
                                         <bean:message key="label.status"/>
                                     </th>
-                                    <th class="nicetableheader">
+                                    <th class="nicetableheader" width="166">
                                         <bean:message key="label.address1"/>
                                     </th>
-                                    <th class="nicetableheader">
+                                    <th class="nicetableheader" width="166">
                                         <bean:message key="label.address2"/>
                                     </th>
-                                    <th class="nicetableheader">
+                                    <th class="nicetableheader" width="85">
                                         <bean:message key="label.city"/>
                                     </th>
-                                    <th class="nicetableheader">
+                                    <th class="nicetableheader" width="152">
                                         <bean:message key="label.state"/>
                                     </th>
-                                    <th class="nicetableheader">
+                                    <th class="nicetableheader" width="67">
                                         <bean:message key="label.zipcode"/>
                                     </th>
-                                    <th class="nicetableheader">
+                                    <th class="nicetableheader" width="235">
                                         <bean:message key="label.country"/>
                                     </th>
                                     <th class="nicetableheader">
@@ -115,33 +119,33 @@
                             <SCRIPT TYPE="text/javascript">
                                 nbrOfRows = '<bean:write name="rowSize"/>';
                             </SCRIPT>
-                            <div id="dataTableDiv" style="overflow:auto; width:950px;height:200px;">
+                            <div id="dataTableDiv" style="overflow:auto; width:1250px;height:200px;">
                                 <table id="dataTable" width="98.5%" border="0" cellpadding="2" cellspacing="1" >
                                     <nested:iterate id="locationVO" name="SpecialistForm" property="locationVOs" indexId="rowCtr">
                                         <tr>  
-                                            <td class="datarowborders" align="center">
+                                            <td class="datarowborders" align="center" width="4%">
                                                 <nested:checkbox property="selected" onclick="javascript:updateAmount()"/>
                                                 <nested:hidden property="id"/>
                                             </td>
-                                            <td class="datarowborders" >
+                                            <td class="datarowborders" width="15%">
                                                 <nested:notEqual property="id" value="-1">
-                                                    <nested:text property="locationName"  styleClass="criteriavalue" maxlength="75" size="30"/>
+                                                    <nested:text property="locationName"  styleClass="criteriavalue" maxlength="75" size="20"/>
                                                 </nested:notEqual>
                                                 <nested:equal property="id" value="-1">
                                                     <nested:text property="locationName" styleClass="criteriavalue" maxlength="75" size="30"/>
                                                 </nested:equal>
                                             </td>
-                                            <td class="datarowborders" width="10">
+                                            <td class="datarowborders" width="7%">
                                                 <nested:text property="status" readonly="true" size="8" styleClass="criteriavalue"/>
                                             </td>
                                             <td class="datarowborders">
-                                                <nested:text property="address1" styleClass="criteriavalue" maxlength="75" size="30"/>
+                                                <nested:text property="address1" styleClass="criteriavalue" maxlength="75" size="25"/>
                                             </td>
                                             <td class="datarowborders">
-                                                <nested:text property="address2" styleClass="criteriavalue" maxlength="75" size="30"/>
+                                                <nested:text property="address2" styleClass="criteriavalue" maxlength="75" size="25"/>
                                             </td>
                                             <td class="datarowborders" >
-                                                <nested:text property="city" maxlength="25" size="15" styleClass="criteriavalue"/>
+                                                <nested:text property="city" maxlength="25" size="11" styleClass="criteriavalue"/>
                                             </td>
                                             <td class="datarowborders" >
                                                 <nested:select property="state" styleClass="criteriavalue">
@@ -158,7 +162,7 @@
                                                 </nested:select>
                                             </td>
                                             <td class="datarowborders" >
-                                                <nested:text property="phone1" maxlength="20" size="15" styleClass="criteriavalue"/>
+                                                <nested:text property="phone1" maxlength="20" size="14" styleClass="criteriavalue"/>
                                             </td>
                                         </tr>
                                     </nested:iterate>

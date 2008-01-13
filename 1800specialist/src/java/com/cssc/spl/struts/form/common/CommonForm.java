@@ -45,6 +45,8 @@ public class CommonForm extends ActionForm {
 
     private boolean logout = false;
     
+    private String displayname = "";
+    
     public String getPageNumber() {
         return pageNumber;
     }
@@ -123,5 +125,13 @@ public class CommonForm extends ActionForm {
 
     public void setLogout(boolean logout) {
         this.logout = logout;
+    }
+
+    public String getDisplayname() {
+        return displayname;
+    }
+
+    public void setDisplayname(String displayname) {
+        this.displayname = displayname;
     }
 }
