@@ -4,7 +4,7 @@
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr>
         <td width="2%">&nbsp;</td>
-        <td width="273">
+        <td width="300">
             <div class="tabberlive">
                 <ul class="tabbernav">    
                     <li id="admin" class="tabberinactive">

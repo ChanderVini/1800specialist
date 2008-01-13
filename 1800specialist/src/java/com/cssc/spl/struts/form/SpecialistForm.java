@@ -247,17 +247,25 @@ public class SpecialistForm extends CommonForm {
         ActionErrors errors = new ActionErrors ();
         String path = mapping.getPath();
         if (PAY_LOCATION_MAP.equals(path)) {
+            if (amount == -1) {
+                ActionMessage message = new ActionMessage (CSSC002E);
+                errors.add (ERRORS + ".label.amtcharged", message);
+            }
             if (Validator.isBlank(ccNbr)) {
-                ActionMessage message = new ActionMessage (CSSC002E, "Credit Card Nbr");
-                errors.add (ERRORS, message);
+                ActionMessage message = new ActionMessage (CSSC002E);
+                errors.add (ERRORS + ".label.ccnbr", message);
             } else {
                 CreditCardValidator creditCardValidator = new CreditCardValidator ();
                 creditCardValidator.addAllowedCardType(new EnRoute ());
                 creditCardValidator.addAllowedCardType(new Diner ());
                 if (!creditCardValidator.isValid(ccNbr)) {
-                    ActionMessage message = new ActionMessage (CSSC001E, "Credit Card");
+                    ActionMessage message = new ActionMessage (CSSC002E, "Credit Card");
                     errors.add (ERRORS, message);
-                }
+                }               
+            }
+             if (Validator.isBlank(secCode)) {
+                ActionMessage message = new ActionMessage (CSSC002E);
+                errors.add (ERRORS + ".label.seccode", message);
             }
             Calendar calendar = Calendar.getInstance ();
             calendar.set(Calendar.HOUR_OF_DAY, 0);

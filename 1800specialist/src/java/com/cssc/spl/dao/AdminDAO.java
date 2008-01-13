@@ -155,6 +155,7 @@ public class AdminDAO {
             ps = connection.prepareStatement(queryBuf.toString());
             queryBuf = null;
             ps.setString (1, userVO.getUserType());
+            logger.debug ("User Type: " + userVO.getUserType());
             rs = ps.executeQuery();
             ArrayList userAL = new ArrayList (10);
             while (rs.next()) {
@@ -198,6 +199,7 @@ public class AdminDAO {
                 uservo.addLocation(locationVO);
                 userAL.add (uservo);
             }
+            logger.debug ("Size of User VOs: " + userAL.size());
             DbConnection.close(connection, ps, rs);
             UserVO[] userVOs = (UserVO[]) userAL.toArray(new UserVO[userAL.size()]);
             userAL = null;

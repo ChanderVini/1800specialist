@@ -132,7 +132,7 @@
                                                     <nested:text property="locationName"  styleClass="criteriavalue" maxlength="75" size="20"/>
                                                 </nested:notEqual>
                                                 <nested:equal property="id" value="-1">
-                                                    <nested:text property="locationName" styleClass="criteriavalue" maxlength="75" size="30"/>
+                                                    <nested:text property="locationName" styleClass="criteriavalue" maxlength="75" size="20"/>
                                                 </nested:equal>
                                             </td>
                                             <td class="datarowborders" width="7%">
@@ -201,7 +201,10 @@
                                                 <div class="specCriteriaTextLabelsRight"><bean:message key="label.amtcharged"/>&nbsp;</div>
                                             </td>
                                             <td class="datarowborders" >
-                                                <html:text name="SpecialistForm" property="amount" readonly="true" size="10" styleClass="criteriavalue"/>
+                                                <html:text name="SpecialistForm" property="amount" readonly="true" size="10" styleClass="criteriavalue"/>&nbsp;
+                                                <html:messages id="error" message="true" property="errors.label.amtcharged">
+                                                    <font color="red"><bean:write name="error"/></font>
+                                                </html:messages>                                            
                                             </td>
                                         </tr>
                                         <tr>
@@ -219,7 +222,10 @@
                                                 <div class="specCriteriaTextLabelsRight"><bean:message key="label.ccnbr"/>&nbsp;</div>
                                             </td>
                                             <td class="datarowborders" >
-                                                <html:text name="SpecialistForm" property="ccNbr" styleClass="criteriavalue"/>
+                                                <html:text name="SpecialistForm" property="ccNbr" styleClass="criteriavalue"/>&nbsp;
+                                                <html:messages id="error" message="true" property="errors.label.ccnbr">
+                                                    <font color="red"><bean:write name="error"/></font>
+                                                </html:messages>                                            
                                             </td>
                                         </tr>
                                         <tr>
@@ -227,7 +233,10 @@
                                                 <div class="specCriteriaTextLabelsRight"><bean:message key="label.seccode"/>&nbsp;</div>
                                             </td>
                                             <td class="datarowborders" >
-                                                <html:password name="SpecialistForm" property="secCode"/>
+                                                <html:password name="SpecialistForm" property="secCode"/>&nbsp;
+                                                <html:messages id="error" message="true" property="errors.label.seccode">
+                                                    <font color="red"><bean:write name="error"/></font>
+                                                </html:messages>                                            
                                             </td>
                                         </tr>
                                         <tr>

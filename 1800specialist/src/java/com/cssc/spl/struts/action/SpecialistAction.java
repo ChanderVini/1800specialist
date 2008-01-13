@@ -121,8 +121,27 @@ public class SpecialistAction extends CommonAction {
                 errors = specialistForm.validate(mapping, request);
                 if (errors.isEmpty()) {
                     messages = handlePayLocations (specialistForm, request, userVO);
+                    specialistForm.setCcNbr("");
+                    specialistForm.setSecCode ("");
                     forward = mapping.findForward(SUCCESS);
                 } else {
+                    Iterator errorIter = errors.get(ERRORS+".label.amtcharged");
+                    while (errorIter.hasNext()) {
+                        ActionMessage message = (ActionMessage)errorIter.next();
+                        logger.debug ("Error Code: " + ERRORS+".label.amtcharged");
+                        messages.add (ERRORS+".label.amtcharged", message);
+                    }
+                    errorIter = errors.get(ERRORS+".label.ccnbr");
+                    while (errorIter.hasNext()) {
+                        ActionMessage message = (ActionMessage)errorIter.next();
+                        logger.debug ("Error Code: " + ERRORS+".label.ccnbr");
+                        messages.add (ERRORS+".label.ccnbr", message);
+                    }
+                    errorIter = errors.get(ERRORS+".label.seccode");
+                    while (errorIter.hasNext()) {
+                        ActionMessage message = (ActionMessage)errorIter.next();
+                        messages.add (ERRORS+".label.seccode", message);
+                    }
                     forward = mapping.findForward(ERROR);
                 }
             }
@@ -335,16 +354,16 @@ public class SpecialistAction extends CommonAction {
                 toBeCharged = true;
                 locationVOs[cnt].setSelected(true);
                 amount += userVO.getRecurringFee();
+                specialistForm.setRecurringFee(userVO.getRecurringFee());
             }
         }
         specialistForm.setStatus(userVO.getStatus());
         if (!ACTV.equals (userVO.getStatus ())) {
             amount += userVO.getSetupFee();
             toBeCharged = true;
+            specialistForm.setSetupFee(userVO.getSetupFee());
         }
         specialistForm.setAmount(amount);
-        specialistForm.setSetupFee(userVO.getSetupFee());
-        specialistForm.setRecurringFee(userVO.getRecurringFee());
         if (toBeCharged) {
             specialistForm.setOperation(CHARGE);
         }

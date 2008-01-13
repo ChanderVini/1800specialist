@@ -73,6 +73,7 @@ public class AdminBO {
     public UserVO[] fetchUsers (UserVO userVO) throws CSSCSystemException, CSSCApplicationException {
         logger.info ("Start fetchUsers (UserVO)");
         AdminDAO adminDAO = new AdminDAO ();
+        logger.debug ("User Type: " + userVO.getUserType());
         UserVO[] userVOs = adminDAO.fetchUsers(userVO);
         ArrayList userVOAL = new ArrayList (Arrays.asList(userVOs));
         ArrayList finalUserVOAL = new ArrayList (10);

@@ -93,11 +93,6 @@ public class AdminAction extends CommonAction {
             adminForm.setLogout(false);
             if (LIST_SPEC_MAP.equals(path)) {
                 messages = handleListSpecialists (adminForm, request);
-                UserVO uservo = new UserVO ();
-                userVO.setUserType(SPEC);
-                AdminBO adminBO = new AdminBO ();
-                UserVO[] userVOs = adminBO.fetchUsers (uservo);
-                adminForm.setUserVOs (userVOs);
                 forward = mapping.findForward(SUCCESS);
             }
             if (DELETE_SPEC_MAP.equals(path)) {
@@ -243,6 +238,7 @@ public class AdminAction extends CommonAction {
         ActionMessages messages = new ActionMessages ();
         UserVO userVO = new UserVO ();
         userVO.setUserType(SPEC);
+        logger.debug ("User Type: " + userVO.getUserType());
         AdminBO adminBO = new AdminBO ();
         UserVO[] userVOs = adminBO.fetchUsers(userVO);
         for (int cnt = 0; cnt < userVOs.length; cnt++) {
@@ -252,7 +248,7 @@ public class AdminAction extends CommonAction {
             }            
         }
         adminForm.setUserVOs(userVOs);
-        logger.info ("Start handleListSpecialists (AdminForm, HttpServletRequest)");
+        logger.info ("End handleListSpecialists (AdminForm, HttpServletRequest)");
         return messages;
     }
     

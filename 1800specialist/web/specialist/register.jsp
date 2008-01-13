@@ -342,8 +342,7 @@
                                 </tr>                                     
                             </table>
                         </td>
-                    </tr>      
-                    
+                    </tr>                          
                     <tr>
                         <td colspan="2" align="center">
                             <html:hidden name="RegisterForm" property="userVO.userType" value="SPEC"/>                            
@@ -353,8 +352,8 @@
                     </tr>
                 </html:form>
             </table>
-        </tr>
-    </td>
+        </td>
+    </tr>
 </table>
 <script type="text/javascript">
     document.getElementsByName ('userVO.username')[0].focus();

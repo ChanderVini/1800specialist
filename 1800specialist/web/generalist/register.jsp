@@ -1,7 +1,7 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-<title><bean:message key="label.specialist"/>&nbsp;<bean:message key="label.registration"/></title>
+<title><bean:message key="label.generalist"/>&nbsp;<bean:message key="label.registration"/></title>
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr>
         <td width="2%">&nbsp;</td>
@@ -179,7 +179,7 @@
                                 </tr>   
                                 <tr>
                                     <td class="specCriteriaTextLabelsRight">
-                                        <bean:message key="label.address2"/>:&nbsp;&nbsp;
+                                        <bean:message key="label.address2"/>&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;
                                     </td>
                                     <td class="specCriteriaTextLabels">
                                         <html:text name="RegisterForm" property="userVO.address2" styleClass="criteriavalue" maxlength="75" size="40"  tabindex="11"/>&nbsp;
@@ -215,7 +215,7 @@
                                         <bean:message key="label.zipcode"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;
                                     </td>
                                     <td class="specCriteriaTextLabels">
-                                        <html:text name="RegisterForm" property="userVO.zipcode" styleClass="criteriavalue" maxlength="6" size="6"  tabindex="14"/>&nbsp;
+                                        <html:text name="RegisterForm" property="userVO.zipcode" styleClass="criteriavalue" maxlength="10" size="8"  tabindex="14"/>&nbsp;
                                         <html:messages id="error" message="true" property="errors.label.zipcode">
                                             <font color="red"><bean:write name="error"/></font>
                                         </html:messages>                                            
