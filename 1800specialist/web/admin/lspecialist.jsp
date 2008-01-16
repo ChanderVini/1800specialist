@@ -53,7 +53,7 @@
                 <tr>
                     <td colspan="2">                        
                         <table id="dataTable" width="100%" border="0" class="inputsubtable" cellpadding="2" cellspacing="1">
-                            <tr><td colspan="7">&nbsp;</td></tr>
+                            <tr><td colspan="5">&nbsp;</td></tr>
                             <tr>
                                 <th class="nicetableheader">
                                     &nbsp;
@@ -69,12 +69,6 @@
                                 </th>
                                 <th class="nicetableheader">
                                     <bean:message key="label.enddt"/>
-                                </th>
-                                <th class="nicetableheader">
-                                    <bean:message key="label.uploaded"/>
-                                </th>
-                                <th class="nicetableheader">
-                                    <bean:message key="label.upload"/>
                                 </th>
                             </tr>
                             <html:form action="/sutype" method="POST" enctype="multipart/form-data">
@@ -94,13 +88,30 @@
                                     <tr valign="top">  
                                         <nested:size id="nbrOfLocs" property="locationVOs"/>
                                         <% String togglejs = "toggleChildRow(this, 'userVO"+rowCtr.intValue()+"', "+nbrOfLocs+");";%>
-                                       <td class="sectionheader" colspan="7">
+                                       <td class="sectionheader" rowspan="2">
                                             <nested:checkbox property="selected"/>&nbsp;
-                                            <img src="images/arrow_collapse.gif" width="9" height="9" onclick="<%=togglejs%>" />
+                                            <img src="images/arrow_collapse.gif" width="9" height="9" onclick="<%=togglejs%>" />&nbsp;&nbsp;&nbsp;
+                                        </td>
+                                        <td class="sectionheader">
                                             <b><bean:message key="label.name"/>:</b> <nested:write property="firstName"/>&nbsp;<nested:write property="lastName"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </td>
+                                        <td class="sectionheader">
                                             <b><bean:message key="label.email"/>:</b> <nested:write property="username"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <b><bean:message key="label.password"/>:</b> <nested:write property="password"/>&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <b><bean:message key="label.location"/>&nbsp;<bean:message key="label.password"/>:</b><nested:write property="locationPwd"/>
+                                        </td>
+                                        <td class="sectionheader" colspan="2">
+                                            <b><bean:message key="label.password"/>:</b> <nested:write property="password"/>
+                                        </td>
+                                    </tr>
+                                    <tr valign="top">  
+                                        <td class="sectionheader">
+                                            <b><bean:message key="label.download"/>&nbsp;<bean:message key="label.password"/>:</b><nested:write property="locationPwd"/>&nbsp;&nbsp;
+                                        </td>
+                                        <td class="sectionheader">
+                                            <b><bean:message key="label.uploaded"/>:</b><nested:write property="uploaded"/>&nbsp;&nbsp;
+                                        </td>
+                                        <td class="sectionheader" colspan="2">
+                                            <nested:file property="formFile" styleClass="inputsubtleButton"/>
+                                            <html:submit property="submit" styleClass="subtleSmallButton" onclick="handleSubmit ('uadmloc.spl')"><bean:message key="label.upload"/></html:submit>
                                         </td>
                                     </tr>
                                     <nested:iterate id="locationVO" property="locationVOs" indexId="locRowCtr">          
@@ -121,22 +132,16 @@
                                                 <div class="criteriaValue"><nested:text property="endDtStr" styleClass="criteriavalue" size="12"/></div>
                                             </td>    
                                             <td class="datarowborders" align="center">
-                                                <div class="criteriaValue"><nested:write property="uploaded"/></div>
-                                            </td>
-                                            <td class="datarowborders" >
-                                                <div class="criteriaValue">
-                                                    <nested:file property="formFile" styleClass="inputsubtleButton"/>
-                                                    <html:submit property="submit" styleClass="subtleSmallButton" onclick="handleSubmit ('uadmloc.spl')"><bean:message key="label.upload"/></html:submit>
-                                                </div>
+                                                
                                             </td>
                                         </tr>
                                     </nested:iterate>
                                 </nested:iterate>
                                 <tr>
-                                    <td colspan="7">&nbsp;</td>
+                                    <td colspan="5">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="7" align="center">
+                                    <td colspan="5" align="center">
                                         <html:submit property="delete" value="Delete" styleClass="subtlebutton" onclick="handleSubmit ('dspec.spl')">
                                             <bean:message key="label.delete"/>
                                         </html:submit>

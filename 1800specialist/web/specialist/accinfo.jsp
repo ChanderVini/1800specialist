@@ -61,6 +61,14 @@
                             <tr><td colspan="2">&nbsp;</td></tr>
                             <tr>
                                 <td class="specCriteriaTextLabelsRight" width="300">
+                                    <bean:message key="label.company"/>:&nbsp;&nbsp;
+                                </td>
+                                <td class="specCriteriaTextLabels">
+                                    <bean:write name="SpecialistForm" property="company"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="specCriteriaTextLabelsRight" width="300">
                                     <bean:message key="label.status"/>:&nbsp;&nbsp;
                                 </td>
                                 <td class="specCriteriaTextLabels">
@@ -69,7 +77,7 @@
                             </tr>
                             <tr>
                                 <td class="specCriteriaTextLabelsRight" width="300">
-                                    <bean:message key="label.actvon"/>:&nbsp;&nbsp;
+                                    <bean:message key="label.startdt"/>:&nbsp;&nbsp;
                                 </td>
                                 <td class="specCriteriaTextLabels">
                                     <bean:write name="SpecialistForm" property="startDt"/>
@@ -89,22 +97,6 @@
                                 </td>
                                 <td class="specCriteriaTextLabels">
                                     <bean:write name="SpecialistForm" property="nbrOfLocations"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="specCriteriaTextLabelsRight" width="300">
-                                    <bean:message key="label.nbrofdwl"/>:&nbsp;&nbsp;
-                                </td>
-                                <td class="specCriteriaTextLabels">
-                                    <bean:write name="SpecialistForm" property="nbrOfDownloads"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="specCriteriaTextLabelsRight" width="300">
-                                    <bean:message key="label.dwlleft"/>:&nbsp;&nbsp;
-                                </td>
-                                <td class="specCriteriaTextLabels">
-                                    <bean:write name="SpecialistForm" property="nbrOfDownloadsLeft"/>
                                 </td>
                             </tr>
                             <tr>

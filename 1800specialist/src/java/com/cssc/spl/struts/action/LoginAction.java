@@ -6,18 +6,16 @@ package com.cssc.spl.struts.action;
 import com.cssc.spl.bo.UserBO;
 import com.cssc.spl.exception.CSSCApplicationException;
 import com.cssc.spl.exception.CSSCSystemException;
-import com.cssc.spl.struts.action.common.CommonAction;
 import com.cssc.spl.struts.form.LoginForm;
-import com.cssc.spl.util.Constants;
 import com.cssc.spl.util.Validator;
 import com.cssc.spl.vo.GeneralistVO;
-import com.cssc.spl.vo.LocationVO;
 import com.cssc.spl.vo.UserVO;
 import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -31,12 +29,17 @@ import org.apache.struts.action.ActionMessages;
  * @author Chander Singh
  * Created on October 15, 2007, 5:03 PM
  */
-public class LoginAction extends CommonAction {
+public class LoginAction extends Action {
+    //Constants for defining Errors, Messages and warnings.
+    private final String ERRORS = "errors";
+    
+    //Constants defined for forward mapping results
+    private final String SUCCESS = "success";
+    private final String ERROR = "error";
+    
     private Logger logger = null;
     
-    private final String CSSC001E = "errors.CSSC001E";
-   
-    private final String USER_SESSION_ATTR = "USER_SESSION_ATTR";
+    private final String CSSC001E = "errors.CSSC001E";   
     
     private final String LOGIN_ADMIN_PATH = "/admlogin";
     private final String LOGIN_GEN_PATH = "/genlogin";
@@ -53,63 +56,70 @@ public class LoginAction extends CommonAction {
         logger = Logger.getLogger (LoginAction.class);
         logger.info ("Start execute (ActionMapping, ActionForm, HttpServletrequest, HttpServletResponse)");
         ActionForward forward = null;
-        String path = mapping.getPath();
-        logger.debug ("Path requested: " + path);
         LoginForm loginForm = (LoginForm) form;
         ActionMessages messages = new ActionMessages ();
         ActionErrors errors = new ActionErrors ();
         HttpSession session = request.getSession();
-        
-        if (ADMIN_PATH.equals (path)) {
-            loginForm.setUserType("ADMIN");
-            forward = mapping.findForward(SUCCESS);
-        }        
-        if (GEN_PATH.equals(path)) {
-            loginForm.setUserType("SPEC");
-            forward = mapping.findForward(SUCCESS);
-        }
-        if (INDEX_PATH.equals (path)) {
-            forward = mapping.findForward(SUCCESS);
-        }
-        if (SPEC_PATH.equals(path)) {
-            loginForm.setUserType("SPEC");
-            forward = mapping.findForward(SUCCESS);
-        }
-        if (LOGIN_ADMIN_PATH.equals (path) || LOGIN_SPEC_PATH.equals(path)) {
-            errors = loginForm.validate(mapping, request);
-            if (errors.isEmpty()) {
-                String userName = loginForm.getUserid();
-                String password = loginForm.getPassword();
-                String userType = loginForm.getUserType ();
+        try {
+            String path = mapping.getPath();
+            logger.debug ("Path requested: " + path);
+            if (ADMIN_PATH.equals (path)) {
+                loginForm.setUserType("ADMIN");
+                forward = mapping.findForward(SUCCESS);
+            }        
+            if (GEN_PATH.equals(path)) {
+                loginForm.setUserType("SPEC");
+                forward = mapping.findForward(SUCCESS);
+            }
+            if (INDEX_PATH.equals (path)) {
+                forward = mapping.findForward(SUCCESS);
+            }
+            if (SPEC_PATH.equals(path)) {
+                loginForm.setUserType("SPEC");
+                forward = mapping.findForward(SUCCESS);
+            }
+            if (LOGIN_ADMIN_PATH.equals (path) || LOGIN_SPEC_PATH.equals(path)) {
+                errors = loginForm.validate(mapping, request);
+                if (errors.isEmpty()) {
+                    String userName = loginForm.getUserid();
+                    String password = loginForm.getPassword();
+                    String userType = loginForm.getUserType ();
 
-                UserVO userVO = new UserVO ();
-                userVO.setUsername(userName);
-                userVO.setPassword(password);
-                userVO.setUserType(userType);
+                    UserVO userVO = new UserVO ();
+                    userVO.setUsername(userName);
+                    userVO.setPassword(password);
+                    userVO.setUserType(userType);
 
-                UserBO userBO = new UserBO ();
-                userVO = userBO.authenticateUser(userVO);
+                    UserBO userBO = new UserBO ();
+                    userVO = userBO.authenticateUser(userVO);
 
-                if (Validator.isBlank(userVO.getFirstName())) {
-                    messages.add(ERRORS, new ActionMessage (CSSC001E, "User Id/Password"));
-                    forward = mapping.findForward(ERROR);
-                } else {
-                    session.setAttribute(userVO.getUserType(), userVO);
-                    forward = mapping.findForward(SUCCESS);
+                    if (Validator.isBlank(userVO.getFirstName())) {
+                        messages.add(ERRORS, new ActionMessage (CSSC001E, "User Id/Password"));
+                        forward = mapping.findForward(ERROR);
+                    } else {
+                        session.setAttribute(userVO.getUserType(), userVO);
+                        forward = mapping.findForward(SUCCESS);
+                    }
                 }
             }
-        }
-        if (LOGIN_GEN_PATH.equals(path)) {
-            errors = loginForm.validate(mapping, request);
-            logger.debug ("Errors: " + errors.isEmpty());
-            if (errors.isEmpty()) {           
-                messages = handleGeneralistLogin (loginForm, request);
-                if (!messages.isEmpty()) {
-                    forward = mapping.findForward(ERROR);
-                } else {
-                    forward = mapping.findForward(SUCCESS);
-                }                
+            if (LOGIN_GEN_PATH.equals(path)) {
+                errors = loginForm.validate(mapping, request);
+                logger.debug ("Errors: " + errors.isEmpty());
+                if (errors.isEmpty()) {           
+                    messages = handleGeneralistLogin (loginForm, request);
+                    if (!messages.isEmpty()) {
+                        forward = mapping.findForward(ERROR);
+                    } else {
+                        forward = mapping.findForward(SUCCESS);
+                    }                
+                }
             }
+        } catch (CSSCSystemException csscsexp) {
+            messages.add(ERRORS, new ActionMessage (csscsexp.getErrorCode()));
+            forward = mapping.findForward(ERROR);
+        } catch (CSSCApplicationException csscaexp) {
+            messages.add(ERRORS, new ActionMessage (csscaexp.getErrorCode()));
+            forward = mapping.findForward(ERROR);
         }
         if (!errors.isEmpty()) {
             Iterator errorIter = errors.get(ERRORS + ".label.userid");
@@ -144,16 +154,12 @@ public class LoginAction extends CommonAction {
         ActionMessages messages = new ActionMessages ();
         
         String userName = loginForm.getUserid();
-        String password = loginForm.getPassword();
-        String locationName = loginForm.getLocation();
         String locationPwd = loginForm.getLocpassword();
-        String specialistid = loginForm.getSpecialistid ();
-        String userType = loginForm.getUserType();
         
         UserBO userBO = new UserBO ();
-        GeneralistVO generalistVO = userBO.authenticateGeneralist (locationName, locationPwd, userType, userName, specialistid, password);
-        if (Validator.isBlank(generalistVO.getLocationname())) {
-            messages.add(ERRORS, new ActionMessage (CSSC001E, "Location Name/User Id/Password"));
+        GeneralistVO generalistVO = userBO.authenticateGeneralist (locationPwd, userName);
+        if (Validator.isBlank(generalistVO.getGeneralistid())) {
+            messages.add(ERRORS, new ActionMessage (CSSC001E, "Generalist Id/Download Password"));
         } else {
             HttpSession session = request.getSession();
             session.setAttribute(GENERALIST, generalistVO);

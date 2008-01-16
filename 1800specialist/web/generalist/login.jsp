@@ -65,43 +65,10 @@
                                             &nbsp;<font color="red"><bean:write name="error"/></font>
                                         </html:messages>
                                     </td>
-                                </tr>
+                                </tr>                            
                                 <tr>
                                     <td class="specCriteriaTextLabelsRight">
-                                        <bean:message key="label.password"/>:
-                                    </td>
-                                    <td class="specCriteriaTextLabels">
-                                        <html:password name="LoginForm" property="password" styleClass="criteriaValue" maxlength="50" size="40"/>
-                                        <html:messages id="error" property="errors.label.password" message="true">
-                                            &nbsp;<font color="red"><bean:write name="error"/></font>
-                                        </html:messages>
-                                    </td>
-                                </tr>                                
-                                <tr>
-                                    <td class="specCriteriaTextLabelsRight">
-                                        <bean:message key="label.location"/>:
-                                    </td>
-                                    <td class="specCriteriaTextLabels">
-                                        <html:text name="LoginForm" property="location" styleClass="criteriaValue" maxlength="50" size="40"/>
-                                        <html:messages id="error" property="errors.label.location" message="true">
-                                            &nbsp;<font color="red"><bean:write name="error"/></font>
-                                        </html:messages>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="specCriteriaTextLabelsRight">
-                                        <bean:message key="label.specialist"/>&nbsp;<bean:message key="label.userid"/>:
-                                    </td>
-                                    <td class="specCriteriaTextLabels">
-                                        <html:text name="LoginForm" property="specialistid" styleClass="criteriaValue" maxlength="50" size="40"/>
-                                        <html:messages id="error" property="errors.label.specialistid" message="true">
-                                            &nbsp;<font color="red"><bean:write name="error"/></font>
-                                        </html:messages>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="specCriteriaTextLabelsRight">
-                                        <bean:message key="label.location"/>&nbsp;<bean:message key="label.password"/>:
+                                        <bean:message key="label.download"/>&nbsp;<bean:message key="label.password"/>:
                                     </td>
                                     <td class="specCriteriaTextLabels">
                                         <html:password name="LoginForm" property="locpassword" styleClass="criteriaValue" maxlength="50" size="40"/>

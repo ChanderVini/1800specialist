@@ -41,10 +41,23 @@ public class AdminDAO {
         Connection connection = null;
         PreparedStatement ps = null;
         try {
-            StringBuffer queryBuf = new StringBuffer ("DELETE FROM location_tbl WHERE LOCATION_NAME = ? AND USER_id = ?");
-            logger.debug ("Query: " + queryBuf.toString());
+            StringBuffer queryBuf = new StringBuffer ("DELETE FROM generalist_tbl WHERE USER_TYPE_CD = ? AND LOCATION_PWD = ? AND USER_ID = ?");
             connection = DbConnection.getConnection();
             connection.setAutoCommit(false);
+            logger.debug ("Query: " + queryBuf.toString());
+            ps = connection.prepareStatement(queryBuf.toString ());
+            queryBuf = null;
+            for (int cnt = 0; cnt < userVOs.length; cnt++) {
+                ps.setString (1, userVOs[cnt].getUserType());
+                ps.setString (2, userVOs[cnt].getLocationPwd());
+                ps.setString (3, userVOs[cnt].getUsername());
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            DbConnection.close(null, ps, null);
+            queryBuf = new StringBuffer ("DELETE FROM location_tbl WHERE LOCATION_NAME = ? AND USER_id = ?");
+            logger.debug ("Query: " + queryBuf.toString());
+            
             ps = connection.prepareStatement(queryBuf.toString());
             queryBuf = null;
             for (int cnt = 0; cnt < locationVOs.length; cnt++) {
@@ -69,7 +82,7 @@ public class AdminDAO {
             logger.info("End deleteSpecialists (UserVO[], LocationVO[])");
          } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (BatchUpdateException buexp) {
             logger.error (buexp.getMessage(), buexp);
             try {
@@ -77,7 +90,7 @@ public class AdminDAO {
             } catch (SQLException sqlexp) {
                 
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error (sqlexp.getMessage(), sqlexp);
             try {
@@ -85,7 +98,7 @@ public class AdminDAO {
             } catch (SQLException sqlExp) {
                 
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, null);
         }
@@ -118,7 +131,7 @@ public class AdminDAO {
             logger.info("End deleteUserTypeVOs (UserTypeVO[])");
          } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (BatchUpdateException buexp) {
             logger.error (buexp.getMessage(), buexp);
             try {
@@ -126,7 +139,7 @@ public class AdminDAO {
             } catch (SQLException sqlexp) {
                 
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error (sqlexp.getMessage(), sqlexp);
             try {
@@ -134,7 +147,7 @@ public class AdminDAO {
             } catch (SQLException sqlExp) {
                 
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, null);
         }
@@ -148,7 +161,7 @@ public class AdminDAO {
         try {
             StringBuffer queryBuf = new StringBuffer ("SELECT UT.USER_ID UI, UT.PASSWORD PWD, UT.USER_TYPE_CD UTC, UT.FIRST_NAME FN, " +
                     "UT.LAST_NAME LN, UT.LOCATION_PWD LP, UT.START_DT SD, UT.END_DT ED, LOC.LOCATION_NAME LLN, LOC.STATUS LST, " +
-                    "LOC.REMAINING_DOWNLOADS RD, LOC.CREATE_DT LCD, LOC.START_DT LSD, LOC.END_DT LED, LOC.UPLOADED UPL " +
+                    "LOC.REMAINING_DOWNLOADS RD, LOC.CREATE_DT LCD, LOC.START_DT LSD, LOC.END_DT LED, UT.UPLOADED UPL " +
                     "FROM user_tbl UT LEFT OUTER JOIN location_tbl LOC ON UT.USER_ID = LOC.USER_ID WHERE USER_TYPE_CD = ?");
             logger.debug("Query: " + queryBuf.toString());
             connection = DbConnection.getConnection();
@@ -168,7 +181,8 @@ public class AdminDAO {
                 String locationPwd = rs.getString("LP");
                 Date userstartDt = rs.getDate("SD");
                 Date userendDt = rs.getDate("ED");
-                
+                String uploaded = rs.getString("UPL");
+                                
                 uservo.setUsername(userId);
                 uservo.setPassword(password);
                 uservo.setUserType(userType);
@@ -177,7 +191,7 @@ public class AdminDAO {
                 uservo.setLocationPwd(locationPwd);
                 uservo.setStartDt(userstartDt);
                 uservo.setEndDt(userendDt);
-                
+                uservo.setUploaded (uploaded);
                 LocationVO locationVO = new LocationVO ();
                 
                 String locationName = rs.getString("LLN");
@@ -186,7 +200,6 @@ public class AdminDAO {
                 Timestamp createDt = rs.getTimestamp("LCD");
                 Date startDate = rs.getDate("LSD");
                 Date endDate = rs.getDate("LED");
-                String uploaded = rs.getString("UPL");
                 
                 locationVO.setLocationName(locationName);
                 locationVO.setStatus(status);
@@ -194,7 +207,6 @@ public class AdminDAO {
                 locationVO.setCreateDt(createDt);
                 locationVO.setStartDate(startDate);
                 locationVO.setEndDate(endDate);
-                locationVO.setUplaoded(uploaded);
                 
                 uservo.addLocation(locationVO);
                 userAL.add (uservo);
@@ -207,10 +219,10 @@ public class AdminDAO {
             return userVOs;
         } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error("Error occured while interacting with database", sqlexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, rs);
         }
@@ -252,10 +264,10 @@ public class AdminDAO {
             return userTypeVOs;
         } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error("Error occured while interacting with database", sqlexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, rs);
         }
@@ -324,7 +336,7 @@ public class AdminDAO {
             logger.info("End updateUserTypes (UserTypeVO[])");        
        } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (BatchUpdateException buexp) {
             logger.error (buexp.getMessage(), buexp);
             try {
@@ -332,7 +344,7 @@ public class AdminDAO {
             } catch (SQLException sqlexp) {
                 
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error (sqlexp.getMessage(), sqlexp);
             try {
@@ -340,7 +352,7 @@ public class AdminDAO {
             } catch (SQLException sqlExp) {
                 
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, null);
         }
@@ -352,7 +364,7 @@ public class AdminDAO {
         PreparedStatement ps = null;
         try {
             StringBuffer queryBuf = new StringBuffer ("UPDATE location_tbl SET LAST_UPDATE_USER_ID_CD = ?, LAST_UPDATE_DT = CURRENT_TIMESTAMP, " +
-                    "REMAINING_DOWNLOADS = ?, END_DT = ?, UPLOADED = ?, STATUS = ? WHERE LOCATION_NAME = ? AND USER_ID = ?");
+                    "REMAINING_DOWNLOADS = ?, END_DT = ?, STATUS = ? WHERE LOCATION_NAME = ? AND USER_ID = ?");
             logger.debug ("Query: " + queryBuf.toString ());
             connection = DbConnection.getConnection();
             connection.setAutoCommit(false);
@@ -362,10 +374,9 @@ public class AdminDAO {
                 ps.setString (1, userId);                
                 ps.setInt (2, locationVOs[cnt].getRemDownloads());
                 ps.setDate (3, locationVOs[cnt].getEndDate());
-                ps.setString (4, locationVOs[cnt].getUploaded());
-                ps.setString (5, locationVOs[cnt].getStatus());
-                ps.setString (6, locationVOs[cnt].getLocationName());
-                ps.setString (7, locationVOs[cnt].getUserId());
+                ps.setString (4, locationVOs[cnt].getStatus());
+                ps.setString (5, locationVOs[cnt].getLocationName());
+                ps.setString (6, locationVOs[cnt].getUserId());
                 ps.addBatch();
             }
             int[] codes = ps.executeBatch();            
@@ -380,7 +391,7 @@ public class AdminDAO {
             logger.info ("End updateLocationVOs(Connection, LocationVO[], String)");
        } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (BatchUpdateException buexp) {
             logger.error (buexp.getMessage(), buexp);
             try {
@@ -388,7 +399,7 @@ public class AdminDAO {
             } catch (SQLException sqlexp) {
                 
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error (sqlexp.getMessage(), sqlexp);
             try {
@@ -396,7 +407,7 @@ public class AdminDAO {
             } catch (SQLException sqlExp) {
                 
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, null);
         }
@@ -408,7 +419,7 @@ public class AdminDAO {
         PreparedStatement ps = null;
         try {
             StringBuffer queryBuf = new StringBuffer ("UPDATE user_tbl SET LAST_UPDATE_USER_ID_CD = ?, LAST_UPDATE_DT = CURRENT_TIMESTAMP, " +
-                    "END_DT = ?, STATUS = ? WHERE USER_TYPE_CD = ? AND USER_ID = ?");
+                    "END_DT = ?, STATUS = ?, UPLOADED = ? WHERE USER_TYPE_CD = ? AND USER_ID = ?");
             logger.debug ("Query: " + queryBuf.toString ());
             connection = DbConnection.getConnection();
             connection.setAutoCommit(false);
@@ -418,8 +429,9 @@ public class AdminDAO {
                 ps.setString (1, userId);                
                 ps.setDate (2, userVOs[cnt].getEndDt());
                 ps.setString (3, userVOs[cnt].getStatus());
-                ps.setString (4, userVOs[cnt].getUserType());
-                ps.setString (5, userVOs[cnt].getUsername());
+                ps.setString (4, userVOs[cnt].getUploaded());
+                ps.setString (5, userVOs[cnt].getUserType());
+                ps.setString (6, userVOs[cnt].getUsername());
                 ps.addBatch();
             }
             int[] codes = ps.executeBatch();            
@@ -434,7 +446,7 @@ public class AdminDAO {
             logger.info ("End updateSpecialistVOs (UserVO[], String)");
        } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (BatchUpdateException buexp) {
             logger.error (buexp.getMessage(), buexp);
             try {
@@ -442,7 +454,7 @@ public class AdminDAO {
             } catch (SQLException sqlexp) {
                 
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error (sqlexp.getMessage(), sqlexp);
             try {
@@ -450,7 +462,7 @@ public class AdminDAO {
             } catch (SQLException sqlExp) {
                 
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, null);
         }

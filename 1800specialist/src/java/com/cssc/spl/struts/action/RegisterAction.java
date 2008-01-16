@@ -8,12 +8,11 @@ import com.cssc.spl.bo.PaymentBO;
 import com.cssc.spl.bo.UserBO;
 import com.cssc.spl.exception.CSSCApplicationException;
 import com.cssc.spl.exception.CSSCSystemException;
-import com.cssc.spl.struts.action.common.CommonAction;
 import com.cssc.spl.struts.form.RegisterForm;
 import com.cssc.spl.util.CSSCUtil;
 import com.cssc.spl.util.Constants;
 import com.cssc.spl.util.CreditCardPayment;
-import com.cssc.spl.util.PasswordGenerator;
+import com.cssc.spl.vo.GeneralistVO;
 import com.cssc.spl.vo.PaymentVO;
 import com.cssc.spl.vo.UserVO;
 import com.lavantech.net.mail.AttachmentException;
@@ -29,7 +28,10 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -44,7 +46,15 @@ import org.apache.struts.util.MessageResources;
  * @author Chander Singh
  * Created on November 6, 2007, 10:50 AM
  */
-public class RegisterAction extends CommonAction {
+public class RegisterAction extends Action {
+    //Constants for defining Errors, Messages and warnings.
+    private final String ERRORS = "errors";
+    private final String MESSAGES = "messages";
+    
+    //Constants defined for forward mapping results
+    private final String SUCCESS = "success";
+    private final String ERROR = "error";
+    
     private Logger logger = null;
     
     private final String FROM_ADDRESS = "FROM_ADDRESS";
@@ -55,10 +65,10 @@ public class RegisterAction extends CommonAction {
     private final String CREDIT_CARD_TYPE_DATA = "CREDIT_CARD_TYPE_DATA";
     private final String DEFAULT_SETUP_FEE = "DEFAULT_SETUP_FEE";
     
+    private final String GENERALIST= "GEN";
     private final String SPECIALIST = "SPEC";
     private final String SYSTEM = "SYSTEM";
     
-    private final String NEW = "NEW";
     private final String ACTV = "ACTIVE";
     
     private final String GEN_REGISTER_MAP = "/genreg";
@@ -118,11 +128,6 @@ public class RegisterAction extends CommonAction {
                         ActionMessage message = (ActionMessage)errorIter.next();
                         messages.add (ERRORS+".label.specialist", message);
                     }
-                    errorIter = errors.get(ERRORS+".label.company");
-                    while (errorIter.hasNext()) {
-                        ActionMessage message = (ActionMessage)errorIter.next();
-                        messages.add (ERRORS+".label.company", message);
-                    }
                     forward = mapping.findForward(ERROR);        
                 }
             }
@@ -131,6 +136,8 @@ public class RegisterAction extends CommonAction {
                 ActionErrors errors = registerForm.validate(mapping, request);
                 if (errors.isEmpty()) {
                     messages = handleSpecRegister (registerForm, request);
+                    UserVO userVO = registerForm.getUserVO();
+                    request.getSession().setAttribute(userVO.getUserType(), userVO);
                     forward = mapping.findForward(SUCCESS);
                 } else {
                     extractErrors (messages, errors);
@@ -164,9 +171,11 @@ public class RegisterAction extends CommonAction {
                 }
             }
         } catch (CSSCSystemException csscsexp) {
-            messages.add(ERRORS, new ActionMessage (csscsexp.getMessage()));
+            messages.add(ERRORS, new ActionMessage (csscsexp.getErrorCode()));
+            forward = mapping.findForward(ERROR);
         } catch (CSSCApplicationException csscaexp) {
-            messages.add(ERRORS, new ActionMessage (csscaexp.getMessage()));
+            messages.add(ERRORS, new ActionMessage (csscaexp.getErrorCode()));
+            forward = mapping.findForward(ERROR);
         }
         saveMessages(request, messages);
         logger.debug("Forward Request: " + forward.getPath());
@@ -178,6 +187,11 @@ public class RegisterAction extends CommonAction {
         while (errorIter.hasNext()) {
             ActionMessage message = (ActionMessage)errorIter.next();
             messages.add (ERRORS+".label.fname", message);
+        }        
+        errorIter = errors.get(ERRORS+".label.company");
+        while (errorIter.hasNext()) {
+            ActionMessage message = (ActionMessage)errorIter.next();
+            messages.add (ERRORS+".label.company", message);
         }
         errorIter = errors.get(ERRORS+".label.lname");
         while (errorIter.hasNext()) {
@@ -289,9 +303,9 @@ public class RegisterAction extends CommonAction {
         UserVO userVO = registerForm.getUserVO();
         userVO.setUserType(SPECIALIST);
         UserBO userBO = new UserBO ();
-        userVO = userBO.createGeneralist (userVO, SYSTEM);                
-        messages.add (MESSAGES, new ActionMessage (CSSC005M, "Save"));
-        registerForm.setUserVO(userVO);
+        GeneralistVO generalistVO = userBO.createGeneralist (userVO, SYSTEM);                
+        HttpSession session = request.getSession();
+        session.setAttribute(GENERALIST, generalistVO);
         logger.info ("End handleGenRegister (RegisterForm, HttpServletRequest)");
         return messages;
     }
@@ -300,8 +314,8 @@ public class RegisterAction extends CommonAction {
         logger.info ("Start handleSpecRegister (RegisterForm, HttpServletRequest)");
         ActionMessages messages = new ActionMessages ();
         UserVO userVO = registerForm.getUserVO();
-        boolean charge = registerForm.isCharge();
-        if (charge) {
+        double setupfee = registerForm.getSetupFee();
+        if (setupfee > 0.0) {
             messages = handlePay (registerForm, request, userVO);
             if (!messages.isEmpty()) {
                 return messages;
@@ -309,8 +323,10 @@ public class RegisterAction extends CommonAction {
         } else {
             registerForm.setSetupFee(0);
         }
-        GregorianCalendar cal = new GregorianCalendar();
+        GregorianCalendar cal = new GregorianCalendar();        
         cal.setLenient(false);
+        cal.set(Calendar.DATE, 1);
+        cal.add (Calendar.MONTH, 1);
         long timeinmillis = cal.getTimeInMillis();
         Date startDate = new Date (timeinmillis);
         cal.set(Calendar.DATE, 1);
@@ -321,16 +337,17 @@ public class RegisterAction extends CommonAction {
         userVO.setStartDt(startDate);
         userVO.setEndDt(endDate);
         userVO.setSetupFee(setupFee);
-        userVO.setUserType(SPECIALIST);
-        PasswordGenerator passwordGenerator = new PasswordGenerator ();
-        String locationPwd = passwordGenerator.generate();
-        userVO.setLocationPwd(locationPwd);
+        userVO.setUserType(SPECIALIST);       
         
         UserBO userBO = new UserBO ();
         userVO = userBO.createSpecialist (userVO, SYSTEM);                
         messages.add(MESSAGES, new ActionMessage (CSSC005M, "Save"));
         registerForm.setUserVO(userVO);
-
+        registerForm.setCcNbr("");
+        registerForm.setSecCode("");
+        registerForm.setCcNbr("");
+        registerForm.setExpmon("");
+        registerForm.setExpyear("");
         String fromAddr = Constants.getProperty (FROM_ADDRESS);
         String fromAlias = Constants.getProperty(FROM_ALIAS);
         
@@ -376,7 +393,7 @@ public class RegisterAction extends CommonAction {
         
         String firstName = userVO.getFirstName();
         String lastName = userVO.getLastName();
-        String address = userVO.getAddress1() + userVO.getAddress2();
+        String address = userVO.getAddress1() + "\r\n" + userVO.getAddress2();
         String city = userVO.getCity();
         String state = userVO.getState();
         String zipCode = userVO.getZipcode();

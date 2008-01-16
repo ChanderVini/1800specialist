@@ -9,7 +9,6 @@ import com.cssc.spl.bo.SpecialistBO;
 import com.cssc.spl.bo.UserBO;
 import com.cssc.spl.exception.CSSCApplicationException;
 import com.cssc.spl.exception.CSSCSystemException;
-import com.cssc.spl.struts.action.common.CommonAction;
 import com.cssc.spl.struts.form.SpecialistForm;
 import com.cssc.spl.util.CSSCUtil;
 import com.cssc.spl.util.Constants;
@@ -28,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -41,20 +42,26 @@ import org.apache.struts.util.LabelValueBean;
  * @author Chander Singh
  * Created on November 13, 2007, 1:36 PM
  */
-public class SpecialistAction extends CommonAction {
+public class SpecialistAction extends Action {
+    //Constants for defining Errors, Messages and warnings.
+    private final String ERRORS = "errors";
+    private final String MESSAGES = "messages";
+    private final String WARNINGS = "warnings";
+    
+    //Constants defined for forward mapping results
+    private final String SUCCESS = "success";
+    private final String ERROR = "error";
+    private final String NOACCESS = "noaccess";
+    
     private Logger logger = null;
     
     private final String ACTV = "ACTIVE";
-    private final String NEW = "NEW";
     
     private final String CHARGE = "CHARGE";
     private final String SPEC_SESSION = "SPEC";
-    private final String SPEC = "SPEC";
     private final String STATE_DATA = "STATE_DATA";
     private final String COUNTRY_DATA = "COUNTRY_DATA";
     private final String CREDIT_CARD_TYPE_DATA = "CREDIT_CARD_TYPE_DATA";
-    
-    private final String location_OPS = "location";
     
     private final String CSSC005M = "messages.CSSC005M";
     private final String CSSC006E = "errors.CSSC006E";
@@ -114,6 +121,11 @@ public class SpecialistAction extends CommonAction {
                 forward = mapping.findForward(SUCCESS);
             }
             if (LIST_LOCATION_MAP.equals (path)) {
+                specialistForm.setAmount(0);
+                specialistForm.setCcNbr("");
+                specialistForm.setSecCode("");
+                specialistForm.setExpmon("");
+                specialistForm.setExpyear("");
                 messages = handleListLocations (specialistForm, request, userVO);
                 forward = mapping.findForward(SUCCESS);
             }
@@ -216,7 +228,7 @@ public class SpecialistAction extends CommonAction {
             }
         } catch (CSSCSystemException csscsexp) {
             logger.debug("Error Code: " + csscsexp.getMessage());
-            messages.add(ERRORS, new ActionMessage (csscsexp.getMessage()));
+            messages.add(ERRORS, new ActionMessage (csscsexp.getErrorCode()));
             forward = mapping.findForward(ERROR);
         } catch (CSSCApplicationException csscaexp) {
             if (CSSC006E.equals (csscaexp.getErrorCode()) || CSSC009E.equals (csscaexp.getErrorCode())) {
@@ -252,21 +264,17 @@ public class SpecialistAction extends CommonAction {
         LocationVO[] locationVOs = uservo.getLocationVOs();
         
         double recurringFee = 0;
-        int nbrOfDownloadsLeft = 0;
         int nbrOfLocs = 0;
         for (int cnt = 0; cnt < locationVOs.length; cnt++) {
-            int nbrOfDownloads = locationVOs[cnt].getRemDownloads();
-            nbrOfDownloadsLeft += nbrOfDownloads;
             if (ACTV.equals(locationVOs[cnt].getStatus())) {
-                recurringFee += userVO.getRecurringFee();
+                recurringFee += uservo.getRecurringFee();
                 nbrOfLocs ++;
             }
+            specialistForm.setRecurringFee (recurringFee);
         }
+        specialistForm.setCompany(uservo.getCompany());
         specialistForm.setNbrOfLocations(nbrOfLocs);
         specialistForm.setStatus (uservo.getStatus());
-        specialistForm.setRecurringFee (recurringFee);
-        specialistForm.setNbrOfDownloads (nbrOfDownloadsLeft);
-        specialistForm.setNbrOfDownloadsLeft (nbrOfDownloadsLeft);
         
         Date startDt = uservo.getStartDt();
         String startDtStr = CSSCUtil.convertDate(startDt, Constants.getProperty ("DATE_FORMAT"), "");
@@ -320,20 +328,21 @@ public class SpecialistAction extends CommonAction {
                 toBeCharged = true;
                 locationVOs[cnt].setSelected(true);
                 amount += userVO.getRecurringFee();
+                specialistForm.setRecurringFee(userVO.getRecurringFee());
             }
         }
         specialistForm.setStatus(userVO.getStatus());
         if (!ACTV.equals (userVO.getStatus ())) {
             amount += userVO.getSetupFee();
+            specialistForm.setSetupFee(userVO.getSetupFee());
             toBeCharged = true;
+        } else {
+            specialistForm.setSetupFee(0);
         }
         specialistForm.setAmount(amount);
-        specialistForm.setSetupFee(userVO.getSetupFee());
-        specialistForm.setRecurringFee(userVO.getRecurringFee());
         if (toBeCharged) {
             specialistForm.setOperation(CHARGE);
-        }
-        
+        }        
         specialistForm.setLocationVOs(locationVOs);
         
         ActionMessage message = new ActionMessage (CSSC005M, "Delete");
@@ -366,9 +375,13 @@ public class SpecialistAction extends CommonAction {
         specialistForm.setAmount(amount);
         if (toBeCharged) {
             specialistForm.setOperation(CHARGE);
+        } else {
+            specialistForm.setOperation("");
+            specialistForm.setStatus(userVO.getStatus());
+            specialistForm.setAmount(0);
+            specialistForm.setSetupFee(0);
+            specialistForm.setRecurringFee(0);
         }
-        logger.debug ("To be Chanrged: " + toBeCharged);
-        logger.debug ("Operation: " + specialistForm.getOperation());
         for (int cnt = 0; cnt < locationVOs.length; cnt++) {
             locationVOs[cnt].process ();
         }
@@ -420,7 +433,7 @@ public class SpecialistAction extends CommonAction {
         
         String firstName = userVO.getFirstName();
         String lastName = userVO.getLastName();
-        String address = userVO.getAddress1() + userVO.getAddress2();
+        String address = userVO.getAddress1() + "\r\n" + userVO.getAddress2();
         String city = userVO.getCity();
         String state = userVO.getState();
         String zipCode = userVO.getZipcode();
@@ -498,7 +511,7 @@ public class SpecialistAction extends CommonAction {
             String userId = userVO.getUsername();
             paymentBO.savePaymentDetails(paymentVOs, userId);
             if (responseCode == 1) {
-               GregorianCalendar cal = new GregorianCalendar ();
+                GregorianCalendar cal = new GregorianCalendar ();
                 cal.set(Calendar.DATE, 1);
                 cal.add (Calendar.MONTH, 1);
                 long timeinmillis = cal.getTimeInMillis();        
@@ -541,16 +554,16 @@ public class SpecialistAction extends CommonAction {
                         toBeCharged = true;
                         locationVOs[cnt].setSelected(true);
                         amount += userVO.getRecurringFee();
+                        specialistForm.setRecurringFee(userVO.getRecurringFee());
                     }
                 }
                 specialistForm.setStatus(userVO.getStatus());
                 if (!ACTV.equals (userVO.getStatus ())) {
                     amount += userVO.getSetupFee();
                     toBeCharged = true;
+                    specialistForm.setSetupFee(userVO.getSetupFee());
                 }
                 specialistForm.setAmount(amount);
-                specialistForm.setSetupFee(userVO.getSetupFee());
-                specialistForm.setRecurringFee(userVO.getRecurringFee());
                 if (toBeCharged) {
                     specialistForm.setOperation(CHARGE);
                 } else {
@@ -595,18 +608,24 @@ public class SpecialistAction extends CommonAction {
                     toBeCharged = true;
                     locationVOs[cnt].setSelected(true);
                     amount += userVO.getRecurringFee();
+                    specialistForm.setRecurringFee(userVO.getRecurringFee());
                 }
             }
             specialistForm.setStatus(userVO.getStatus());
             if (!ACTV.equals (userVO.getStatus ())) {
                 amount += userVO.getSetupFee();
+                specialistForm.setSetupFee(userVO.getSetupFee());
                 toBeCharged = true;
             }
-            specialistForm.setAmount(amount);
-            specialistForm.setSetupFee(userVO.getSetupFee());
-            specialistForm.setRecurringFee(userVO.getRecurringFee());
+            specialistForm.setAmount(amount);           
             if (toBeCharged) {
                 specialistForm.setOperation(CHARGE);
+            } else {
+                specialistForm.setOperation("");
+                specialistForm.setStatus(userVO.getStatus());
+                specialistForm.setAmount(0);
+                specialistForm.setSetupFee(0);
+                specialistForm.setRecurringFee(0);
             }
             locationVOAL = new ArrayList (Arrays.asList(locationVOs));
             Collections.sort(locationVOAL);

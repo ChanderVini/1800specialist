@@ -5,12 +5,9 @@
 package com.cssc.spl.struts.action;
 
 import com.cssc.spl.bo.AdminBO;
-import com.cssc.spl.bo.SpecialistBO;
 import com.cssc.spl.exception.CSSCApplicationException;
 import com.cssc.spl.exception.CSSCSystemException;
-import com.cssc.spl.struts.action.common.CommonAction;
 import com.cssc.spl.struts.form.AdminForm;
-import com.cssc.spl.struts.form.SpecialistForm;
 import com.cssc.spl.util.CSSCUtil;
 import com.cssc.spl.util.Constants;
 import com.cssc.spl.vo.LocationVO;
@@ -19,7 +16,6 @@ import com.cssc.spl.vo.UserVO;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -43,7 +40,16 @@ import org.apache.struts.upload.FormFile;
  * Created on November 9, 2007, 1:45 PM
  */
 
-public class AdminAction extends CommonAction {
+public class AdminAction extends Action {
+    //Constants for defining Errors, Messages and warnings.
+    private final String ERRORS = "errors";
+    private final String MESSAGES = "messages";
+    
+    //Constants defined for forward mapping results
+    private final String SUCCESS = "success";
+    private final String ERROR = "error";
+    private final String NOACCESS = "noaccess";
+    
     private Logger logger = null;
     
     private final String ADMIN_SESSION = "ADMIN";
@@ -139,7 +145,7 @@ public class AdminAction extends CommonAction {
                 }
             }
         } catch (CSSCSystemException csscsexp) {
-            messages.add(ERRORS, new ActionMessage (csscsexp.getMessage()));
+            messages.add(ERRORS, new ActionMessage (csscsexp.getErrorCode()));
             forward = mapping.findForward(ERROR);
         } catch (CSSCApplicationException csscaexp) {
             messages.add(ERRORS, new ActionMessage (csscaexp.getErrorCode(), csscaexp.getMessage()));
@@ -341,46 +347,41 @@ public class AdminAction extends CommonAction {
         String realPath = Constants.getProperty(DEFAULT_UPLOAD_DIR);
         try {
             UserVO[] userVOs = adminForm.getUserVOs();
-            ArrayList locationVOAL = new ArrayList (10);
+            ArrayList userVOAL = new ArrayList (10);
             for (int cnt = 0; cnt < userVOs.length; cnt++) {
                 String username = userVOs[cnt].getUsername();
                 String dirpath = File.separator + File.separator + username;
-                LocationVO[] locationVOs = userVOs[cnt].getLocationVOs();
-                for (int loccnt = 0; loccnt < locationVOs.length; loccnt++) {
-                    FormFile formFile = locationVOs[loccnt].getFormFile();
-                    if (formFile != null && formFile.getFileSize() > 0) {
-                        dirpath = realPath + dirpath + File.separator + locationVOs[loccnt].getLocationName();
-                        File file = new File (dirpath);
-                        logger.debug("File Path: " + file.getCanonicalPath());
-                        if (!file.exists()) {
-                            file.mkdirs();
-                            logger.debug("Directory doesn't exists");
-                        }
-                        File[] files = file.listFiles();
-                        for (int filecnt = 0; filecnt < files.length; filecnt++) {
-                            files[filecnt].delete();
-                        }
-                        String filename = dirpath + File.separator + formFile.getFileName();
-                        file = new File (filename);
-                        if (!file.exists()) {
-                            file.createNewFile();
-                        }
-                        byte[] fileData = formFile.getFileData();
-                        FileOutputStream fos = new FileOutputStream (file);
-                        fos.write(fileData);
-                        fos.close();
-                        logger.debug("LocationVO: " + locationVOs[loccnt].getAddress1());
-                        locationVOs[loccnt].setUserId(userVOs[cnt].getUsername());
-                        locationVOs[loccnt].setUplaoded("Y");
-                        locationVOAL.add (locationVOs[loccnt]);
+                FormFile formFile = userVOs[cnt].getFormFile();
+                if (formFile != null && formFile.getFileSize() > 0) {
+                    dirpath = realPath + dirpath;
+                    File file = new File (dirpath);
+                    logger.debug("File Path: " + file.getCanonicalPath());
+                    if (!file.exists()) {
+                        file.mkdirs();
+                        logger.debug("Directory doesn't exists");
                     }
+                    File[] files = file.listFiles();
+                    for (int filecnt = 0; filecnt < files.length; filecnt++) {
+                        files[filecnt].delete();
+                    }
+                    String filename = dirpath + File.separator + formFile.getFileName();
+                    file = new File (filename);
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
+                    byte[] fileData = formFile.getFileData();
+                    FileOutputStream fos = new FileOutputStream (file);
+                    fos.write(fileData);
+                    fos.close();
+                    userVOs[cnt].setUploaded("Y");
+                    userVOAL.add (userVOs[cnt]);
                 }
             }
-            if (!locationVOAL.isEmpty()) {
-                LocationVO[] locationVOs = (LocationVO[]) locationVOAL.toArray(new LocationVO[locationVOAL.size()]);
-                locationVOAL = null;
+            if (!userVOAL.isEmpty()) {
+                UserVO[] uservos = (UserVO[]) userVOAL.toArray(new UserVO[userVOAL.size()]);
+                userVOAL = null;
                 AdminBO adminBO = new AdminBO();
-                adminBO.saveLocationVOs(locationVOs, userVO);
+                adminBO.saveUserVOs(uservos, userVO);
                 messages = handleListSpecialists(adminForm, request);
                 ActionMessage message = new ActionMessage (CSSC005M, "File Upload");
                 messages.add (MESSAGES, message);

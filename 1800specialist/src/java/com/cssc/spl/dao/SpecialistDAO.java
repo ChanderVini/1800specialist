@@ -46,7 +46,7 @@ public class SpecialistDAO {
         UserVO uservo = new UserVO ();
         try {
             StringBuffer queryBuf = new StringBuffer ("SELECT UT.STATUS US, UT.START_DT USD, UT.END_DT UED, UT.RECURRING_FEE URF, " +
-                    "LT.REMAINING_DOWNLOADS LRD, LT.STATUS LS FROM user_tbl UT LEFT OUTER JOIN location_tbl LT ON " +
+                    "LT.REMAINING_DOWNLOADS LRD, LT.STATUS LS, UT.COMPANY COM FROM user_tbl UT LEFT OUTER JOIN location_tbl LT ON " +
                     "UT.USER_ID = LT.USER_ID WHERE UT.USER_ID = ? AND UT.USER_TYPE_CD = ? ");
             connection = DbConnection.getConnection();
             logger.debug ("Query: " + queryBuf.toString());
@@ -68,10 +68,13 @@ public class SpecialistDAO {
                 int remainingDownloads = rs.getInt("LRD");
                 String locStatus = rs.getString("LS");
                 
+                String company = rs.getString ("COM");
+                
                 uservo.setStatus(userStatus);
                 uservo.setStartDt(startDt);
                 uservo.setEndDt(endDt);
                 uservo.setRecurringFee(recurringFee);
+                uservo.setCompany(company);
                 
                 LocationVO locationVO = new LocationVO ();
                 locationVO.setStatus(locStatus);
@@ -82,10 +85,10 @@ public class SpecialistDAO {
             DbConnection.close(connection, ps, rs);
          } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error("Error occured while interacting with database", sqlexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, rs);
         }
@@ -177,10 +180,10 @@ public class SpecialistDAO {
             logger.info("End fetchSpecialist (UserVO)");
         } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error("Error occured while interacting with database", sqlexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, rs);
         }
@@ -224,7 +227,7 @@ public class SpecialistDAO {
             DbConnection.close(connection, null, null);
        } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (CSSCApplicationException csscaexp) {
              try {
                 connection.rollback();
@@ -240,7 +243,7 @@ public class SpecialistDAO {
                 connection.rollback();
             } catch (SQLException sqlExp) {}
             logger.error ("Error Occured whle commiting/rollbacking operation: " + sqlexp.getMessage());
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "'");
         } finally {
             DbConnection.close(connection, null, null);
         }    
@@ -295,13 +298,13 @@ public class SpecialistDAO {
             logger.info("End fetchSpecialist (UserVO)");
         } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error (sqlexp.getMessage(), sqlexp);
             try {
                 connection.rollback();
             } catch (SQLException sqlExp) {}
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, null);
         }
@@ -336,7 +339,7 @@ public class SpecialistDAO {
             logger.info("End deleteLocationVOs (LocationVO[])");
          } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (BatchUpdateException buexp) {
              try {
                 connection.rollback();
@@ -349,13 +352,13 @@ public class SpecialistDAO {
                     throw new CSSCApplicationException (CSSC006E, locationVOs[codeCnt].getLocationName());
                 }
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error (sqlexp.getMessage(), sqlexp);
             try {
                 connection.rollback();
             } catch (SQLException sqlExp) {}
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, null);
         }    
@@ -368,8 +371,7 @@ public class SpecialistDAO {
         ResultSet rs = null;
         try {
             StringBuffer queryBuf = new StringBuffer ("SELECT LOCATION_NAME LN, STATUS STAT, PHONE1 PH1, ADDRESS1 ADD1, ADDRESS2 ADD2, CITY CITY, " +
-                    "STATE STATE, COUNTRY CNTR, ZIP_CODE ZIP, REMAINING_DOWNLOADS RD, START_DT SD, END_DT ED, USER_ID UI, UPLOADED UPD " +
-                    "FROM location_tbl");
+                    "STATE STATE, COUNTRY CNTR, ZIP_CODE ZIP, REMAINING_DOWNLOADS RD, START_DT SD, END_DT ED, USER_ID UI FROM location_tbl");
             logger.debug ("Query: " + queryBuf.toString());
             connection = DbConnection.getConnection();
             ps = connection.prepareStatement(queryBuf.toString ());
@@ -391,7 +393,6 @@ public class SpecialistDAO {
                 Date startDt = rs.getDate("SD");
                 Date endDt = rs.getDate("ED");
                 String userId = rs.getString ("UI");
-                String uploaded = rs.getString("UPD");
                 
                 locationVO.setLocationName(locationName);
                 locationVO.setStatus(status);
@@ -406,7 +407,6 @@ public class SpecialistDAO {
                 locationVO.setStartDate(startDt);
                 locationVO.setEndDate(endDt);
                 locationVO.setUserId (userId);
-                locationVO.setUplaoded(uploaded);
                 
                 locationVOAL.add(locationVO);                        
             }
@@ -417,10 +417,10 @@ public class SpecialistDAO {
             return locationVOs;
         } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error("Error occured while interacting with database", sqlexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, rs);
         }
@@ -433,7 +433,7 @@ public class SpecialistDAO {
         ResultSet rs = null;
         try {
             StringBuffer queryBuf = new StringBuffer ("SELECT LOCATION_NAME LN, STATUS STAT, PHONE1 PH1, ADDRESS1 ADD1, ADDRESS2 ADD2, CITY CITY, " +
-                    "STATE STATE, COUNTRY CNTR, ZIP_CODE ZIP, REMAINING_DOWNLOADS RD, START_DT SD, END_DT ED, USER_ID UI, UPLOADED UPD " +
+                    "STATE STATE, COUNTRY CNTR, ZIP_CODE ZIP, REMAINING_DOWNLOADS RD, START_DT SD, END_DT ED, USER_ID UI " +
                     "FROM location_tbl WHERE USER_ID = ? ");
             logger.debug ("Query: " + queryBuf.toString());
             connection = DbConnection.getConnection();
@@ -457,7 +457,6 @@ public class SpecialistDAO {
                 Date startDt = rs.getDate("SD");
                 Date endDt = rs.getDate("ED");
                 String userId = rs.getString ("UI");
-                String uploaded = rs.getString("UPD");
                 
                 locationVO.setLocationName(locationName);
                 locationVO.setStatus(status);
@@ -472,7 +471,6 @@ public class SpecialistDAO {
                 locationVO.setStartDate(startDt);
                 locationVO.setEndDate(endDt);
                 locationVO.setUserId (userId);
-                locationVO.setUplaoded(uploaded);
                 
                 locationVOAL.add(locationVO);                        
             }
@@ -483,10 +481,10 @@ public class SpecialistDAO {
             return locationVOs;
         } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error("Error occured while interacting with database", sqlexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, rs);
         }
@@ -502,7 +500,7 @@ public class SpecialistDAO {
             DbConnection.close(connection, null, null);
        } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (CSSCApplicationException csscaexp) {
              try {
                 connection.rollback();
@@ -518,7 +516,7 @@ public class SpecialistDAO {
                 connection.rollback();
            } catch (SQLException sqlExp) {}
             logger.error ("Error Occured whle commiting/rollbacking operation: " + sqlexp.getMessage());
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, null, null);
         }    
@@ -529,8 +527,8 @@ public class SpecialistDAO {
         PreparedStatement ps = null;
         try {
             StringBuffer queryBuf = new StringBuffer ("INSERT INTO location_tbl (LOCATION_NAME, ADDRESS1, ADDRESS2, CITY, STATE, COUNTRY, " +
-                    "ZIP_CODE, USER_ID, CREATE_USER_ID_CD, CREATE_DT, LAST_UPDATE_USER_ID_CD, LAST_UPDATE_DT, PHONE1, UPLOADED)  VALUES " +
-                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?)");
+                    "ZIP_CODE, USER_ID, CREATE_USER_ID_CD, CREATE_DT, LAST_UPDATE_USER_ID_CD, LAST_UPDATE_DT, PHONE1)  VALUES " +
+                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?)");
             logger.debug ("Query: " + queryBuf.toString ());
             ps = connection.prepareStatement(queryBuf.toString());
             queryBuf = null;
@@ -546,7 +544,6 @@ public class SpecialistDAO {
                 ps.setString(9, userId);
                 ps.setString(10, userId);
                 ps.setString (11, insertLocationVOs[cnt].getPhone1());
-                ps.setString (12, insertLocationVOs[cnt].getUploaded());
                 ps.addBatch();
             }
             int[] codes = ps.executeBatch();
@@ -567,10 +564,10 @@ public class SpecialistDAO {
                     throw new CSSCApplicationException (CSSC009E, insertLocationVOs[codeCnt].getLocationName());
                 }
             }
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error ("SQLException", sqlexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(null, ps, null);
         }    
@@ -587,7 +584,7 @@ public class SpecialistDAO {
             DbConnection.close(connection, null, null);
        } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (CSSCApplicationException csscaexp) {
              try {
                 connection.rollback();
@@ -603,7 +600,7 @@ public class SpecialistDAO {
                 connection.rollback();
            } catch (SQLException sqlExp) {}
             logger.error ("Error Occured while commiting/rollbacking operation: " + sqlexp.getMessage());
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, null, null);
         }    
@@ -615,7 +612,7 @@ public class SpecialistDAO {
         try {
             StringBuffer queryBuf = new StringBuffer ("UPDATE location_tbl SET ADDRESS1 = ?, ADDRESS2 = ?, CITY = ?, STATE = ?, COUNTRY = ?, " +
                     "ZIP_CODE = ?, LAST_UPDATE_USER_ID_CD = ?, LAST_UPDATE_DT = CURRENT_TIMESTAMP, REMAINING_DOWNLOADS = ? " +
-                    ", PHONE1 = ?, STATUS = ?, START_DT = ?, END_DT = ?, UPLOADED = ? WHERE LOCATION_NAME = ? AND USER_ID = ?");
+                    ", PHONE1 = ?, STATUS = ?, START_DT = ?, END_DT = ? WHERE LOCATION_NAME = ? AND USER_ID = ?");
             logger.debug ("Query: " + queryBuf.toString ());
             ps = connection.prepareStatement(queryBuf.toString());
             queryBuf = null;
@@ -637,9 +634,8 @@ public class SpecialistDAO {
                 ps.setString (10, updateLocationVOs[cnt].getStatus());
                 ps.setDate (11, updateLocationVOs[cnt].getStartDate());
                 ps.setDate (12, updateLocationVOs[cnt].getEndDate());
-                ps.setString (13, updateLocationVOs[cnt].getUploaded());
-                ps.setString(14, updateLocationVOs[cnt].getLocationName());
-                ps.setString (15, updateLocationVOs[cnt].getUserId());
+                ps.setString(13, updateLocationVOs[cnt].getLocationName());
+                ps.setString (14, updateLocationVOs[cnt].getUserId());
                 ps.addBatch();
             }
             int[] codes = ps.executeBatch();
@@ -653,10 +649,10 @@ public class SpecialistDAO {
             logger.info ("End updateLocationVOs(Connection, LocationVO[], String)");
         } catch (BatchUpdateException buexp) {
             logger.error ("BatchUpdate Exception", buexp);            
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
             logger.error ("SQLException", sqlexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(null, ps, null);
         }    

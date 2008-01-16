@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.apache.struts.upload.FormFile;
 
 /**
  *
@@ -49,6 +50,9 @@ public class UserVO extends CommonVO implements Serializable {
     
     private String startDtStr = "";
     private String endDtStr = "";
+    
+    private String uploaded = "N";
+    private FormFile formFile = null;
     
     private boolean selected = false;
     
@@ -304,6 +308,22 @@ public class UserVO extends CommonVO implements Serializable {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }    
+
+    public String getUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(String uploaded) {
+        this.uploaded = uploaded;
+    }    
+
+    public FormFile getFormFile() {
+        return formFile;
+    }
+
+    public void setFormFile(FormFile formFile) {
+        this.formFile = formFile;
     }
     
     public int compareTo(Object obj) {

@@ -4,12 +4,11 @@
 
 package com.cssc.spl.struts.form;
 
-import com.cssc.spl.struts.form.common.CommonForm;
 import com.cssc.spl.util.Validator;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionErrors;
+
 import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.util.MessageResources;
@@ -19,7 +18,7 @@ import org.apache.struts.util.MessageResources;
  * @author Chander Singh
  * Created on October 15, 2007, 4:58 PM
  */
-public class LoginForm extends CommonForm {
+public class LoginForm extends ActionForm {
     private final String CSSC002E = "errors.CSSC002E";
         
     private final String LOGIN_ADMIN_PATH = "/admlogin";
@@ -32,9 +31,128 @@ public class LoginForm extends CommonForm {
     private String specialistid = "";
     private String location = "";
     private String locpassword = "";
-        
-    /** Creates a new instance of LoginForm */
-    public LoginForm() {
+    
+    //Constant defined for Key to be associated with Messages to be displayed to the user on the screen.
+    protected final String MESSAGES = "messages";
+    //Constant defined for Key to be associated with Errors to be displayed to the user on the screen.
+    protected final String ERRORS = "errors";
+    //Constant defined for Key to be associated with Warnings to be displayed to the user on the screen.	
+    protected final String WARNINGS = "warnings";
+    
+    //Properties used for Pagination if required on the screen.
+    //Current Page Number
+    private String pageNumber;
+    //Total Number of Pages records are devided into.
+    private String totalPages;
+    //Total Number of records as per search.
+
+    private String totalRecords;
+    //First Record number being displayed on the Current Page
+    private String pageFirstRecordNbr;
+    //Last Record number being displayed on the Current Page    
+    private String pageLastRecordNbr;
+    
+    //Operation request to be performed.
+    private String operation;
+    //Last Operation requested by the user.
+    private String lastOperation;
+
+    //Properties for Sorting Operation.
+    //Order in which Sorting needs to be performed.
+    private String sortorder = "A";
+    //Column to be sorted.
+    private String sortcolumn = "";    
+
+    private boolean logout = false;
+    
+    private String displayname = "";
+    
+    public String getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(String pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public String getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(String totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    public String getTotalRecords() {
+        return totalRecords;
+    }
+
+    public void setTotalRecords(String totalRecords) {
+        this.totalRecords = totalRecords;
+    }
+
+    public String getPageFirstRecordNbr() {
+        return pageFirstRecordNbr;
+    }
+
+    public void setPageFirstRecordNbr(String pageFirstRecordNbr) {
+        this.pageFirstRecordNbr = pageFirstRecordNbr;
+    }
+
+    public String getPageLastRecordNbr() {
+        return pageLastRecordNbr;
+    }
+
+    public void setPageLastRecordNbr(String pageLastRecordNbr) {
+        this.pageLastRecordNbr = pageLastRecordNbr;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public String getLastOperation() {
+        return lastOperation;
+    }
+
+    public void setLastOperation(String lastOperation) {
+        this.lastOperation = lastOperation;
+    }
+
+    public String getSortorder() {
+        return sortorder;
+    }
+
+    public void setSortorder(String sortorder) {
+        this.sortorder = sortorder;
+    }
+
+    public String getSortcolumn() {
+        return sortcolumn;
+    }
+
+    public void setSortcolumn(String sortcolumn) {
+        this.sortcolumn = sortcolumn;
+    }    
+
+    public boolean isLogout() {
+        return logout;
+    }
+
+    public void setLogout(boolean logout) {
+        this.logout = logout;
+    }
+
+    public String getDisplayname() {
+        return displayname;
+    }
+
+    public void setDisplayname(String displayname) {
+        this.displayname = displayname;
     }
 
     public String getUserid() {
@@ -99,26 +217,21 @@ public class LoginForm extends CommonForm {
         String locationLbl = resources.getMessage("label.location");
         String useridLbl = resources.getMessage("label.userid");
         String passwordLbl = resources.getMessage("label.password");
-        String specialistidLbl = resources.getMessage("label.specialistid");
+        
         String path = mapping.getPath();
         if (LOGIN_GEN_PATH.equals(path)) {
-            boolean isBlank = Validator.isBlank(location);
-            if (isBlank) {
-                ActionMessage message = new ActionMessage (CSSC002E, locationLbl);
-                errors.add(ERRORS + ".label.location", message); 
-            }
-            isBlank = Validator.isBlank(locpassword);
+            boolean isBlank = Validator.isBlank(locpassword);
             if (isBlank) {
                 ActionMessage message = new ActionMessage (CSSC002E, locationLbl);
                 errors.add(ERRORS + ".label.locpassword", message); 
             }
-            isBlank = Validator.isBlank(specialistid);
+            isBlank = Validator.isBlank(userid);
             if (isBlank) {
-                ActionMessage message = new ActionMessage (CSSC002E, specialistidLbl);
-                errors.add(ERRORS + ".label.specialistid", message); 
+                ActionMessage message = new ActionMessage (CSSC002E, useridLbl);
+                errors.add(ERRORS + ".label.userid", message); 
             }
         }
-        if (LOGIN_ADMIN_PATH.equals(path) || LOGIN_SPEC_PATH.equals(path) || LOGIN_GEN_PATH.equals (path)) {
+        if (LOGIN_ADMIN_PATH.equals(path) || LOGIN_SPEC_PATH.equals(path)) {
             boolean isBlank = Validator.isBlank(userid);
             if (isBlank) {
                 ActionMessage message = new ActionMessage (CSSC002E, useridLbl);

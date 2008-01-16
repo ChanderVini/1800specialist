@@ -52,13 +52,13 @@ public class GeneralistDAO {
             logger.info ("End updateLocationVOs(Connection, LocationVO[], String)");
          } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
          } catch (SQLException sqlexp) {
              try {
                 connection.rollback();
            } catch (SQLException sqlExp) {}
             logger.error ("Error Occured while commiting/rollbacking operation: " + sqlexp.getMessage());
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } finally {
             DbConnection.close(connection, ps, null);
         }    

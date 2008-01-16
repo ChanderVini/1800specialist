@@ -4,6 +4,7 @@ import com.cssc.spl.exception.CSSCApplicationException;
 import com.cssc.spl.exception.CSSCSystemException;
 import com.cssc.spl.exception.DbConnectionException;
 import com.cssc.spl.util.DbConnection;
+import com.cssc.spl.util.PasswordGenerator;
 import com.cssc.spl.vo.GeneralistVO;
 import com.cssc.spl.vo.UserVO;
 import java.sql.Connection;
@@ -23,6 +24,7 @@ public class UserDAO {
     private Logger logger = null;
     private final String CSSC004E = "errors.CSSC004E";
     private final String CSSC015E = "errors.CSSC015E";
+    private final String CSSC016E = "errors.CSSC016E";
     
     public UserDAO() {
         logger = Logger.getLogger(UserDAO.class);
@@ -39,36 +41,37 @@ public class UserDAO {
             boolean isvalid = validateGeneralist(connection, userVO);
             if (!isvalid) {
                 DbConnection.close(connection, null, null);
-                return null;
+                throw new CSSCApplicationException (CSSC016E, "");
             }
-            StringBuffer queryBuf = new StringBuffer ("INSERT INTO generalist_tbl (GENERALIST_ID, LOCATION_NAME, USER_ID, PASSWORD, COMPANY_NAME, " +
+            
+            StringBuffer queryBuf = new StringBuffer ("INSERT INTO generalist_tbl (GENERALIST_ID, LOCATION_PWD, USER_ID, COMPANY_NAME, " +
                     "FIRST_NAME, LAST_NAME, ADDRESS1, ADDRESS2, CITY, STATE, COUNTRY, ZIP_CODE, FAX, PHONE, CREATE_USER_ID_CD, CREATE_DT, " +
                     "LAST_UPDATE_USER_ID_CD, LAST_UPDATE_DT, USER_TYPE_CD) VALUES " +
-                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?)");
+                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?)");
             logger.debug ("Query: " + queryBuf.toString());
             ps = connection.prepareStatement(queryBuf.toString ());
             queryBuf = null;
             ps.setString (1, userVO.getUsername());
-            ps.setString (2, userVO.getLocation());
+            ps.setString (2, userVO.getLocationPwd());
             logger.debug("Specialist: " + userVO.getReferredCd());
             ps.setString (3, userVO.getReferredCd());
-            ps.setString (4, userVO.getPassword());
-            ps.setString (5, userVO.getCompany());
-            ps.setString (6, userVO.getFirstName());
-            ps.setString (7, userVO.getLastName());
-            ps.setString (8, userVO.getAddress1());
-            ps.setString (9, userVO.getAddress2());
-            ps.setString (10, userVO.getCity());
-            ps.setString (11, userVO.getState());
-            ps.setString (12, userVO.getCountry());
-            ps.setString (13, userVO.getZipcode());
-            ps.setString (14, userVO.getPhone2());
-            ps.setString (15, userVO.getPhone1());
+            ps.setString (4, userVO.getCompany());
+            ps.setString (5, userVO.getFirstName());
+            ps.setString (6, userVO.getLastName());
+            ps.setString (7, userVO.getAddress1());
+            ps.setString (8, userVO.getAddress2());
+            ps.setString (9, userVO.getCity());
+            ps.setString (10, userVO.getState());
+            ps.setString (11, userVO.getCountry());
+            ps.setString (12, userVO.getZipcode());
+            ps.setString (13, userVO.getPhone2());
+            ps.setString (14, userVO.getPhone1());
+            ps.setString (15, userId);
             ps.setString (16, userId);
-            ps.setString (17, userId);
-            ps.setString (18, userVO.getUserType());
+            ps.setString (17, userVO.getUserType());
             logger.debug ("User Type Cd: " + userVO.getUserType());
             int code = ps.executeUpdate();
+            logger.debug (code);
             if (code == -3) {
                 DbConnection.close (connection, ps, rs);
                 throw new CSSCApplicationException (CSSC015E, "");
@@ -77,10 +80,14 @@ public class UserDAO {
             logger.info ("End createGeneralist (UserVO, String)");
         } catch (DbConnectionException dbexp) {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "");
         } catch (SQLException sqlexp) {
+            int errorCode = sqlexp.getErrorCode();
+            if (errorCode == 1062) {
+                throw new CSSCApplicationException (CSSC015E, "");
+            }
             logger.error("Error occured while interacting with database", sqlexp);
-            throw new CSSCSystemException (CSSC004E);
+            throw new CSSCSystemException (CSSC004E, "'");
         } finally {
             DbConnection.close(connection, ps, rs);
         }
@@ -93,21 +100,19 @@ public class UserDAO {
         ResultSet rs = null;
         try {
             boolean isvalid = false;
-            StringBuffer queryBuf = new StringBuffer ("SELECT COUNT(1) FROM user_tbl USR, location_tbl LOC WHERE USR.USER_ID = ? AND " +
-                    "USR.USER_TYPE_CD = ? AND LOC.LOCATION_NAME = ? AND USR.LOCATION_PWD = ? AND LOC.USER_ID = USR.USER_ID");
+            StringBuffer queryBuf = new StringBuffer ("SELECT USER_ID FROM user_tbl USR WHERE USR.USER_TYPE_CD = ? AND USR.LOCATION_PWD = ?");
             logger.debug ("Query: " + queryBuf.toString ());
             ps = connection.prepareStatement(queryBuf.toString());
             queryBuf = null;
-            ps.setString (1, userVO.getReferredCd());
-            ps.setString (2, userVO.getUserType());
-            ps.setString (3, userVO.getLocation());
-            ps.setString (4, userVO.getLocationPwd());
+            ps.setString (1, userVO.getUserType());
+            ps.setString (2, userVO.getLocationPwd());
             
             rs = ps.executeQuery();
             if (rs.next()) {
-                int valid = rs.getInt(1);
-                if (valid == 1) {
+                String userId = rs.getString ("USER_ID");
+                if (userId != null) {
                     isvalid = true;
+                    userVO.setReferredCd(userId);
                 }
             }
             DbConnection.close(null, ps, rs);
@@ -124,16 +129,18 @@ public class UserDAO {
     public UserVO createSpecialist (UserVO userVO, String userId) throws CSSCApplicationException, CSSCSystemException {
         logger.info ("Start createUser (UserVO, String)");
         Connection connection = null;
-        PreparedStatement ps = null;
-        
+        PreparedStatement ps = null;        
         ResultSet rs = null;
         try {
+            connection = DbConnection.getConnection();
+            generateLocPassword (connection, userVO);
+            logger.debug ("Location Password: " + userVO.getLocationPwd());
             StringBuffer queryBuf = new StringBuffer ("INSERT INTO user_tbl " +
                     "(USER_ID, PASSWORD, USER_TYPE_CD, STATUS, PHONE1, FAX, FIRST_NAME, LAST_NAME, ADDRESS1, ADDRESS2, CITY, STATE, COUNTRY, ZIP_CODE, " +
-                    "CREATE_USER_ID_CD, CREATE_DT, LAST_UPDATE_USER_ID_CD, LAST_UPDATE_DT, LOCATION_PWD, END_DT, SETUP_FEE, START_DT) VALUES " +
-                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, CURRENT_TIMESTAMP)");
+                    "CREATE_USER_ID_CD, CREATE_DT, LAST_UPDATE_USER_ID_CD, LAST_UPDATE_DT, LOCATION_PWD, END_DT, SETUP_FEE, START_DT, COMPANY) VALUES " +
+                    "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?, ?, ?, CURRENT_TIMESTAMP, ?)");
             logger.debug ("Query: " + queryBuf.toString ());
-            connection = DbConnection.getConnection();
+            
             ps = connection.prepareStatement(queryBuf.toString ());
             queryBuf = null;
             logger.debug ("User Name: " + userVO.getUsername());
@@ -161,6 +168,7 @@ public class UserDAO {
             }
             ps.setDate (18, userVO.getEndDt());
             ps.setDouble(19, userVO.getSetupFee());
+            ps.setString (20, userVO.getCompany());
             int code = ps.executeUpdate();
             if (code == -3) {
                 DbConnection.close (connection, ps, rs);
@@ -180,45 +188,64 @@ public class UserDAO {
         return userVO;
     }
     
-    public GeneralistVO authenticateGeneralist (String locationName, String locationPwd, String userType, String userName, String specialistid, String password) 
-    throws CSSCApplicationException, CSSCSystemException {
+    public void generateLocPassword (Connection connection, UserVO userVO) throws CSSCSystemException {        
+        logger.info ("Start validateLocPassword (Connection, USerVO)");
+        PreparedStatement ps = null;
+        ResultSet rs = null;        
+        try {
+            PasswordGenerator passwordGenerator = new PasswordGenerator ();
+            String locationPwd = passwordGenerator.generate();
+            StringBuffer queryBuf = new StringBuffer ("SELECT COUNT(1) FROM user_tbl where LOCATION_PWD = ?");
+            logger.debug ("Query: " + queryBuf.toString());
+            ps = connection.prepareStatement (queryBuf.toString ());
+            queryBuf = null;
+            ps.setString (1, locationPwd);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt (1);
+                if (count == 1) {
+                    DbConnection.close(null, ps, rs);
+                    generateLocPassword(connection, userVO);
+                }
+            }
+            DbConnection.close(null, ps, rs);
+            userVO.setLocationPwd(locationPwd);
+            logger.info ("End validateLocPassword (Connection, USerVO)");
+         } catch (SQLException sqlexp) {
+            logger.error("Error occured while interacting with database", sqlexp);
+            throw new CSSCSystemException (CSSC004E);
+        } finally {
+            DbConnection.close(null, ps, rs);
+        }        
+    }
+    
+    public GeneralistVO authenticateGeneralist (String locationPwd, String userName) throws CSSCApplicationException, CSSCSystemException {
         logger.info ("Start authenticateGeneralist (String, String, String, String, String, String)");
         Connection connection = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            StringBuffer queryBuf = new StringBuffer ("SELECT GEN.GENERALIST_ID GI, GEN.LOCATION_NAME LN, GEN.USER_ID UI, GEN.USER_TYPE_CD UTC, " +
-                    "LOC.REMAINING_DOWNLOADS RDL, LOC.UPLOADED UPL " +
-                    "FROM generalist_tbl GEN, user_tbl USR, location_tbl LOC WHERE GEN.GENERALIST_ID = ? AND GEN.USER_ID = ? AND GEN.PASSWORD = ? AND " +
-                    "GEN.USER_TYPE_CD = 'SPEC' AND USR.LOCATION_PWD = ? AND LOC.LOCATION_NAME = ? AND USR.USER_ID = GEN.USER_ID AND " +
-                    "LOC.USER_ID = USR.USER_ID AND LOC.LOCATION_NAME = GEN.LOCATION_NAME");
+            StringBuffer queryBuf = new StringBuffer ("SELECT GEN.GENERALIST_ID GI, GEN.USER_ID UI, GEN.USER_TYPE_CD UTC " +
+                    "FROM generalist_tbl GEN, user_tbl USR WHERE GEN.GENERALIST_ID = ? AND GEN.USER_TYPE_CD = 'SPEC' AND " +
+                    "GEN.LOCATION_PWD = ? AND GEN.LOCATION_PWD = USR.LOCATION_PWD");
             connection = DbConnection.getConnection();
             
             ps = connection.prepareStatement(queryBuf.toString());
             logger.debug ("Query: " + queryBuf.toString());
             queryBuf = null;
             ps.setString (1, userName);
-            ps.setString (2, specialistid);
-            ps.setString (3, password);
-            ps.setString (4, locationPwd);
-            ps.setString (5, locationName);
+            ps.setString (2, locationPwd);
             
             rs = ps.executeQuery();
             GeneralistVO generalistVO = new GeneralistVO ();
             if (rs.next()) {
                 String generalistid = rs.getString("GI");
-                String locationname = rs.getString("LN");
                 String userid = rs.getString ("UI");
                 String usertypecd = rs.getString("UTC");
-                int remainingdls = rs.getInt("RDL");
-                String uploaded = rs.getString ("UPL");
                 
                 generalistVO.setGeneralistid(generalistid);
-                generalistVO.setLocationname(locationname);
                 generalistVO.setUserid(userid);
                 generalistVO.setUsertypecd(usertypecd);                
-                generalistVO.setRemDownloads(remainingdls);
-                generalistVO.setUploaded(uploaded);
             }
             DbConnection.close(connection, ps, rs);
             logger.info ("Start authenticateGeneralist (String, String, String, String, String, String)");
@@ -299,6 +326,7 @@ public class UserDAO {
                 userVO.setAddress1(address1);
                 userVO.setAddress2 (address2);
                 userVO.setCity(city);
+                userVO.setCompany(company);
                 logger.debug("State: " + state);
                 userVO.setState(state);
                 userVO.setCountry(country);

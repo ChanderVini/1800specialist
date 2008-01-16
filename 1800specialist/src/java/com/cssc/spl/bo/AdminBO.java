@@ -112,12 +112,24 @@ public class AdminBO {
         return userTypeVOs;
     }
     
+    public UserVO[] saveUserVOs (UserVO[] uservos, UserVO userVO) throws CSSCApplicationException, CSSCSystemException {
+        logger.info ("Start saveUserVOs (UserVO[], UserVO)");
+        AdminDAO adminDAO = new AdminDAO ();
+        for (int cnt = 0; cnt < uservos.length; cnt++) {
+            logger.debug ("Uploaded : " + uservos[cnt].getUploaded());
+        }
+        adminDAO.updateUserVOs(uservos, userVO.getUsername());
+        UserVO[] userVOs = fetchUsers (userVO);        
+        logger.info ("Start saveUserVOs (UserVO[], UserVO)");        
+        return userVOs;
+    }
+    
     public UserVO[] saveLocationVOs (LocationVO[] locationVOs, UserVO userVO) throws CSSCApplicationException, CSSCSystemException {
-        logger.info ("Start saveLocationVOs (LocationVO[])");
+        logger.info ("Start saveLocationVOs (LocationVO[], UserVO)");
         AdminDAO adminDAO = new AdminDAO ();
         adminDAO.updateLocationVOs(locationVOs, userVO.getUsername());
         UserVO[] userVOs = fetchUsers (userVO);        
-        logger.info ("Start saveLocationVOs (LocationVO[])");        
+        logger.info ("Start saveLocationVOs (LocationVO[], USerVO)");        
         return userVOs;
     }
     

@@ -9,8 +9,6 @@ import com.cssc.spl.util.Constants;
 import com.cssc.spl.vo.common.CommonVO;
 import java.io.Serializable;
 import java.sql.Date;
-import java.sql.Timestamp;
-import org.apache.struts.upload.FormFile;
 
 /**
  *
@@ -41,10 +39,7 @@ public class LocationVO extends CommonVO implements Serializable, Comparable {
     private String startDtStr = "";
     private String endDtStr = "";
     
-    private String uploaded = "";
-    
     private String userId = "";
-    private FormFile formFile = null;
     
     private String locationPwd = "";
     
@@ -58,10 +53,6 @@ public class LocationVO extends CommonVO implements Serializable, Comparable {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
-    }
-
-    public void setUploaded(String uploaded) {
-        this.uploaded = uploaded;
     }
     
     public String getLocationName() {
@@ -207,14 +198,6 @@ public class LocationVO extends CommonVO implements Serializable, Comparable {
     public void setEndDtStr(String endDtStr) {
         this.endDtStr = endDtStr;
     }
- 
-    public String getUploaded () {
-        return uploaded;
-    }
-    
-    public void setUplaoded (String uploaded) {
-        this.uploaded = uploaded;
-    }
     
     public String getUserId () {
         return userId;
@@ -222,14 +205,6 @@ public class LocationVO extends CommonVO implements Serializable, Comparable {
     
     public void setUserId (String userId) {
         this.userId = userId;
-    }
-
-    public FormFile getFormFile() {
-        return formFile;
-    }
-
-    public void setFormFile(FormFile formFile) {
-        this.formFile = formFile;
     }
 
     public String getLocationPwd() {

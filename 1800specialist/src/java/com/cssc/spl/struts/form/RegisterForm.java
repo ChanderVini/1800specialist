@@ -4,7 +4,6 @@
 
 package com.cssc.spl.struts.form;
 
-import com.cssc.spl.struts.form.common.CommonForm;
 import com.cssc.spl.util.Diner;
 import com.cssc.spl.util.EnRoute;
 import com.cssc.spl.util.Validator;
@@ -13,7 +12,8 @@ import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.validator.CreditCardValidator;
 import org.apache.commons.validator.EmailValidator;
-import org.apache.log4j.Logger;
+
+import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
@@ -24,7 +24,7 @@ import org.apache.struts.util.LabelValueBean;
  * @author Chander Singh
  * Created on November 6, 2007, 10:52 AM
  */
-public class RegisterForm extends CommonForm {
+public class RegisterForm extends ActionForm {
     private UserVO userVO = new UserVO ();
     
     private final String REGISTER_GEN_SUBMIT_MAP = "/genregsub";
@@ -35,7 +35,6 @@ public class RegisterForm extends CommonForm {
     private String hearus = "";
     
     private boolean agree = false;
-    private boolean charge = true;
     
     private LabelValueBean[] stateBeans = new LabelValueBean [0];
     private LabelValueBean[] countryBeans = new LabelValueBean [0];    
@@ -55,6 +54,129 @@ public class RegisterForm extends CommonForm {
     private final String CSSC002E = "errors.CSSC002E";
     private final String CSSC003E = "errors.CSSC003E";
     private final String CSSC014E = "errors.CSSC014E";
+    
+    //Constant defined for Key to be associated with Messages to be displayed to the user on the screen.
+    protected final String MESSAGES = "messages";
+    //Constant defined for Key to be associated with Errors to be displayed to the user on the screen.
+    protected final String ERRORS = "errors";
+    //Constant defined for Key to be associated with Warnings to be displayed to the user on the screen.	
+    protected final String WARNINGS = "warnings";
+    
+    //Properties used for Pagination if required on the screen.
+    //Current Page Number
+    private String pageNumber;
+    //Total Number of Pages records are devided into.
+    private String totalPages;
+    //Total Number of records as per search.
+
+    private String totalRecords;
+    //First Record number being displayed on the Current Page
+    private String pageFirstRecordNbr;
+    //Last Record number being displayed on the Current Page    
+    private String pageLastRecordNbr;
+    
+    //Operation request to be performed.
+    private String operation;
+    //Last Operation requested by the user.
+    private String lastOperation;
+
+    //Properties for Sorting Operation.
+    //Order in which Sorting needs to be performed.
+    private String sortorder = "A";
+    //Column to be sorted.
+    private String sortcolumn = "";    
+
+    private boolean logout = false;
+    
+    private String displayname = "";
+    
+    public String getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(String pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public String getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(String totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    public String getTotalRecords() {
+        return totalRecords;
+    }
+
+    public void setTotalRecords(String totalRecords) {
+        this.totalRecords = totalRecords;
+    }
+
+    public String getPageFirstRecordNbr() {
+        return pageFirstRecordNbr;
+    }
+
+    public void setPageFirstRecordNbr(String pageFirstRecordNbr) {
+        this.pageFirstRecordNbr = pageFirstRecordNbr;
+    }
+
+    public String getPageLastRecordNbr() {
+        return pageLastRecordNbr;
+    }
+
+    public void setPageLastRecordNbr(String pageLastRecordNbr) {
+        this.pageLastRecordNbr = pageLastRecordNbr;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public String getLastOperation() {
+        return lastOperation;
+    }
+
+    public void setLastOperation(String lastOperation) {
+        this.lastOperation = lastOperation;
+    }
+
+    public String getSortorder() {
+        return sortorder;
+    }
+
+    public void setSortorder(String sortorder) {
+        this.sortorder = sortorder;
+    }
+
+    public String getSortcolumn() {
+        return sortcolumn;
+    }
+
+    public void setSortcolumn(String sortcolumn) {
+        this.sortcolumn = sortcolumn;
+    }    
+
+    public boolean isLogout() {
+        return logout;
+    }
+
+    public void setLogout(boolean logout) {
+        this.logout = logout;
+    }
+
+    public String getDisplayname() {
+        return displayname;
+    }
+
+    public void setDisplayname(String displayname) {
+        this.displayname = displayname;
+    }
     
     public UserVO getUserVO() {
         return userVO;
@@ -184,53 +306,39 @@ public class RegisterForm extends CommonForm {
         this.setupFee = setupFee;
     }
     
-    public boolean isCharge() {
-        return charge;
-    }
-
-    public void setCharge(boolean charge) {
-        this.charge = charge;
-    }
-    
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors ();
         
         String path = mapping.getPath();
         if (REGISTER_GEN_SUBMIT_MAP.equals(path)) {
-            if (Validator.isBlank(userVO.getLocation())) {
-                ActionMessage errorMessage = new ActionMessage (CSSC002E);
-                errors.add (ERRORS+".label.location", errorMessage);
-            }
             if (Validator.isBlank(userVO.getLocationPwd())) {
                 ActionMessage errorMessage = new ActionMessage (CSSC002E);
                 errors.add (ERRORS+".label.locpwd", errorMessage);
             }
-            if (Validator.isBlank(userVO.getReferredCd())) {
-                ActionMessage errorMessage = new ActionMessage (CSSC002E);
-                errors.add (ERRORS+".label.specialist", errorMessage);
-            }
-            if (Validator.isBlank(userVO.getCompany())) {
-                ActionMessage errorMessage = new ActionMessage (CSSC002E);
-                errors.add (ERRORS+".label.company", errorMessage);
-            }            
             validate (errors);                        
         }
         
         if (REGISTER_SPEC_SUBMIT_MAP.equals (path)) {
             validate (errors);
+            String password = userVO.getPassword();
+            if (Validator.isBlank (password)) {
+                ActionMessage errorMessage = new ActionMessage (CSSC002E);
+                errors.add (ERRORS+".label.password", errorMessage);
+            } else if (password.length() < 6) {
+                ActionMessage errorMessage = new ActionMessage (CSSC014E, "Password", "6");
+                errors.add (ERRORS+".label.password", errorMessage);
+            } else if (!password.equals(repassword)) {
+                ActionMessage errorMessage = new ActionMessage (CSSC003E, "Password", "Retype Password");
+                errors.add (ERRORS+".label.repassword", errorMessage);
+            } 
             if (!agree) {
                 ActionMessage errorMessage = new ActionMessage (CSSC002E);
                 errors.add (ERRORS+".label.terms", errorMessage);
             }
-            if (!charge) {
+            if (setupFee <= 0.0) {
                 return errors;
             }
             boolean isblank = false;
-            if (setupFee <= 0.0) {
-                ActionMessage message = new ActionMessage (CSSC002E, "Setup Fee");
-                errors.add (ERRORS + ".label.amtcharged", message);
-                isblank = true;
-            } 
             if (Validator.isBlank(ccNbr)) {
                 ActionMessage message = new ActionMessage (CSSC002E, "Credit Card Nbr");
                 errors.add (ERRORS + ".label.ccnbr", message);
@@ -287,6 +395,10 @@ public class RegisterForm extends CommonForm {
             errors.add (ERRORS + ".label.fname", errorMessage);
         }
 
+        if (Validator.isBlank(userVO.getCompany())) {
+            ActionMessage errorMessage = new ActionMessage (CSSC002E);
+            errors.add (ERRORS+".label.company", errorMessage);
+        }            
         String lastName = userVO.getLastName ();
         if (Validator.isBlank (lastName)) {
             ActionMessage errorMessage = new ActionMessage (CSSC002E);
@@ -339,17 +451,7 @@ public class RegisterForm extends CommonForm {
                 errors.add (ERRORS + ".label.email", errorMessage);
             }
         }
-        String password = userVO.getPassword();
-        if (Validator.isBlank (password)) {
-            ActionMessage errorMessage = new ActionMessage (CSSC002E);
-            errors.add (ERRORS+".label.password", errorMessage);
-        } else if (password.length() < 6) {
-            ActionMessage errorMessage = new ActionMessage (CSSC014E, "Password", "6");
-            errors.add (ERRORS+".label.password", errorMessage);
-        } else if (!password.equals(repassword)) {
-            ActionMessage errorMessage = new ActionMessage (CSSC003E, "Password", "Retype Password");
-            errors.add (ERRORS+".label.repassword", errorMessage);
-        } 
+        
     }
     
     public void reset(ActionMapping mapping, HttpServletRequest request) {
@@ -358,6 +460,5 @@ public class RegisterForm extends CommonForm {
         promotionalCd = "";                
         hearus = "";
         agree = false;
-        charge = false;
     }
 }

@@ -91,7 +91,7 @@
             <forward name="success" path="tile.spcterms"/>
         </action>        
         <action path="/spcregsub" name="RegisterForm" scope="session" type="com.cssc.spl.struts.action.RegisterAction" validate="false">
-            <forward name="success" path="/spec.spl"/>
+            <forward name="success" path="/lspcloc.spl"/>
             <forward name="error" path="tile.spcregister"/>
         </action>        
         <action path="/lspcloc" name="SpecialistForm" scope="session" type="com.cssc.spl.struts.action.SpecialistAction" validate="false">
@@ -136,7 +136,7 @@
         </action>             
         <!--End Mappings for Specialist functionalities-->
         
-        <!--Start of Generalist functionalist-->
+        <!--Start of Generalist functionalists-->
         <action path="/generalist" name="LoginForm" scope="request" type="com.cssc.spl.struts.action.LoginAction">
             <forward name="success" path="tile.glogin"/>
             <forward name="error" path="tile.glogin"/>
@@ -150,7 +150,7 @@
             <forward name="error" path="tile.genregister"/>
         </action>          
         <action path="/genregsub" name="RegisterForm" scope="session" type="com.cssc.spl.struts.action.RegisterAction" validate="false">
-            <forward name="success" path="tile.glogin"/>
+            <forward name="success" path="/gendwn.spl"/>
             <forward name="error" path="tile.genregister"/>
         </action>                  
         <action path="/gendwn" name="GeneralistForm" scope="session" type="com.cssc.spl.struts.action.GeneralistAction">

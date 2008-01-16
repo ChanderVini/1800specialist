@@ -76,14 +76,14 @@
                     <tr>
                         <td valign="top" colspan="2">
                             <html:form action="/gendwnsub" method="POST">
-                            <table id="dataTable" width="200" border="0" class="inputsubtable" cellpadding="2" cellspacing="0" bgcolor="#CCCCCC">
-                                    <tr><td colspan="2">&nbsp;</td></tr>
-                                    <tr>
-                                        <td colspan="2" align="center">
-                                            <html:submit property="download" styleClass="subtleButton" ><bean:message key="label.download"/></html:submit>
-                                        </td>
-                                    </tr>
-                                </table>
+                            <table id="dataTable" width="200" border="0" class="inputsubtable" cellpadding="2" cellspacing="0">
+                                <tr><td colspan="2">&nbsp;</td></tr>
+                                <tr>
+                                    <td colspan="2" align="center">
+                                        <html:submit property="download" styleClass="subtleButton" ><bean:message key="label.download"/></html:submit>
+                                    </td>
+                                </tr>
+                            </table>
                             </html:form>
                         </td>
                     </tr>

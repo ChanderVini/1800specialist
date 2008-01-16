@@ -4,20 +4,15 @@
 
 package com.cssc.spl.struts.action;
 
-import com.cssc.spl.bo.GeneralistBO;
 import com.cssc.spl.exception.CSSCApplicationException;
 import com.cssc.spl.exception.CSSCSystemException;
-import com.cssc.spl.struts.action.common.CommonAction;
+import org.apache.struts.action.Action;
 import com.cssc.spl.struts.form.GeneralistForm;
 import com.cssc.spl.util.Constants;
 import com.cssc.spl.vo.GeneralistVO;
-import com.cssc.spl.vo.LocationVO;
 import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import javax.servlet.ServletOutputStream;
@@ -37,12 +32,19 @@ import org.apache.struts.action.ActionMessages;
  * @author Chander Singh
  * Created on November 27, 2007, 1:54 PM
  */
-public class GeneralistAction extends CommonAction {
+public class GeneralistAction extends Action {
+    //Constants for defining Errors, Messages and warnings.
+    private final String ERRORS = "errors";
+    
+    //Constants defined for forward mapping results
+    private final String SUCCESS = "success";
+    private final String ERROR = "error";
+    private final String NOACCESS = "noaccess";
+    
     private Logger logger = null;
     
     private final String DOWNLOAD = "DWN";
     private final String DOWNLOADCOM = "DWNCOM";
-    private final String SYSTEM = "SYSTEM";
     private final String GEN_SESSION = "GEN";
     
     private final String DEFAULT_UPLOAD_DIR = "DEFAULT_UPLOAD_DIR";
@@ -52,7 +54,6 @@ public class GeneralistAction extends CommonAction {
     private final String FILE_DOWN_MAP = "/filedwn";
     
     private final String CSSC007E = "errors.CSSC007E";
-    private final String CSSC012E = "errors.CSSC012E";
     private final String CSSC013E = "errors.CSSC013E";
     
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -100,10 +101,10 @@ public class GeneralistAction extends CommonAction {
                 }
             }            
          } catch (CSSCSystemException csscsexp) {
-            logger.debug("Error Code: " + csscsexp.getMessage());
-            messages.add(ERRORS, new ActionMessage (csscsexp.getMessage()));
+            messages.add(ERRORS, new ActionMessage (csscsexp.getErrorCode()));
             forward = mapping.findForward(ERROR);
         } catch (CSSCApplicationException csscaexp) {
+            messages.add(ERRORS, new ActionMessage (csscaexp.getErrorCode()));
             forward = mapping.findForward(ERROR);
         }
         if (!errors.isEmpty()) {
@@ -155,17 +156,12 @@ public class GeneralistAction extends CommonAction {
     private ActionMessages handleFetchDownload (GeneralistForm generalistForm, HttpServletRequest request, GeneralistVO generalistVO) throws CSSCApplicationException, CSSCSystemException {
         logger.info ("Start handleFetchDownload (GeneralistForm, HttpServletRequest, GeneralistVO)");
         ActionMessages messages = new ActionMessages ();
-        int remainingDownloads = generalistVO.getRemDownloads();
         String uploaded = generalistVO.getUploaded();
-        if (remainingDownloads < 1) {
-            ActionMessage message = new ActionMessage (CSSC012E, "");
-            messages.add (ERRORS, message);
-        } else if ("N".equals(uploaded)) {
+        if ("N".equals(uploaded)) {
             ActionMessage message = new ActionMessage (CSSC013E, "");
             messages.add (ERRORS, message);
         } else {
             generalistForm.setOperation(DOWNLOAD);
-            generalistForm.setRemainingDownloads (remainingDownloads);
         }
         
         logger.info ("End handleFetchDownload (GeneralistForm, HttpServletRequest, GeneralistVO)");
@@ -177,9 +173,8 @@ public class GeneralistAction extends CommonAction {
         ActionMessages messages = new ActionMessages ();
         String realPath = Constants.getProperty(DEFAULT_UPLOAD_DIR);
         String username = generalistVO.getUserid();
-        String locationName = generalistVO.getLocationname();
         String dirpath = File.separator + File.separator + username;
-        dirpath = realPath + dirpath + File.separator + locationName;
+        dirpath = realPath + dirpath + File.separator;
         File file = new File (dirpath);
         if (!file.exists()) {
             logger.debug ("File doesnt exists");
@@ -196,15 +191,7 @@ public class GeneralistAction extends CommonAction {
                 for (int cnt = 0; cnt < files.length; cnt++) {
                     logger.debug ("Name of file: " + files[cnt]);
                 }
-                logger.debug ("Remaining Downloads: " + generalistForm.getRemainingDownloads());
-                int remainingDownloads = generalistForm.getRemainingDownloads() - 1;
-                LocationVO locationVO = new LocationVO ();
-                locationVO.setRemDownloads(remainingDownloads);
-                locationVO.setLocationName(locationName);
-                GeneralistBO generalistBO = new GeneralistBO ();
-                generalistBO.updateLocationVO(locationVO, SYSTEM);
                 generalistForm.setOperation(DOWNLOADCOM);
-                generalistForm.setRemainingDownloads(remainingDownloads);
                 generalistForm.setFile(files[0]);
             }
         }

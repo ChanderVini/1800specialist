@@ -102,6 +102,17 @@
                                 <tr><td colspan="2"><hr></td></tr>
                                 <tr>
                                     <td class="specCriteriaTextLabelsRight" width="200">
+                                        <bean:message key="label.company"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;
+                                    </td>
+                                    <td class="specCriteriaTextLabels">
+                                        <html:text name="RegisterForm" property="userVO.company" styleClass="criteriavalue" maxlength="50" size="30"/>&nbsp;
+                                        <html:messages id="error" message="true" property="errors.label.company">
+                                            <font color="red"><bean:write name="error"/></font>
+                                        </html:messages>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="specCriteriaTextLabelsRight" width="200">
                                         <bean:message key="label.fname"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;
                                     </td>
                                     <td class="specCriteriaTextLabels">
@@ -221,14 +232,6 @@
                     <tr>
                         <td colspan="2">
                         <table id="dataTable" width="100%" border="0" class="inputsubtable"  cellpadding="0" cellspacing="1">
-                            <tr>
-                                <td class="specCriteriaTextLabels" colspan="2">
-                                    <div class="criteriavalue">
-                                        <b>Charge setup fee</b>
-                                        <html:checkbox name="RegisterForm" property="charge" styleClass="criteriavalue"/>
-                                    </div>
-                                </td>
-                            </tr>
                             <tr>
                                 <td class="specCriteriaTextLabelsRight" width="200">
                                     <bean:message key="label.amtcharged"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;

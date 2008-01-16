@@ -73,46 +73,7 @@
                                 </tr>                                
                                 <tr>
                                     <td class="specCriteriaTextLabelsRight">
-                                        <bean:message key="label.password"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;
-                                    </td>
-                                    <td class="specCriteriaTextLabels">
-                                        <html:password name="RegisterForm" property="userVO.password" styleClass="criteriavalue" maxlength="15" size="15"  tabindex="2"/>&nbsp;
-                                        <html:messages id="error" message="true" property="errors.label.password">
-                                            <font color="red"><bean:write name="error"/></font>
-                                        </html:messages>                                            
-                                    </td>
-                                </tr>         
-                                <tr>
-                                    <td>&nbsp;</td>
-                                    <td class="specCriteriaTextLabels">
-                                        <bean:message key="label.passwordmsg"/>
-                                    </td>
-                                </tr>                                
-                                <tr>
-                                    <td class="specCriteriaTextLabelsRight">
-                                        <bean:message key="label.repassword"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;
-                                    </td>
-                                    <td class="specCriteriaTextLabels">
-                                        <html:password name="RegisterForm" property="repassword" styleClass="criteriavalue" maxlength="15" size="15"  tabindex="3"/>&nbsp;
-                                        <html:messages id="error" message="true" property="errors.label.repassword">
-                                            <font color="red"><bean:write name="error"/></font>
-                                        </html:messages>                                            
-                                    </td>
-                                </tr>          
-                                <tr>
-                                    <td class="specCriteriaTextLabelsRight">
-                                        <bean:message key="label.location"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;
-                                    </td>
-                                    <td class="specCriteriaTextLabels">
-                                        <html:text name="RegisterForm" property="userVO.location" styleClass="criteriavalue" maxlength="15" size="15"  tabindex="4"/>&nbsp;
-                                        <html:messages id="error" message="true" property="errors.label.location">
-                                            <font color="red"><bean:write name="error"/></font>
-                                        </html:messages>                                            
-                                    </td>
-                                </tr>    
-                                <tr>
-                                    <td class="specCriteriaTextLabelsRight">
-                                        <bean:message key="label.location"/>&nbsp;<bean:message key="label.password"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;
+                                        <bean:message key="label.download"/>&nbsp;<bean:message key="label.password"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;
                                     </td>
                                     <td class="specCriteriaTextLabels">
                                         <html:password name="RegisterForm" property="userVO.locationPwd" styleClass="criteriavalue" maxlength="15" size="15"  tabindex="5"/>&nbsp;
@@ -121,17 +82,6 @@
                                         </html:messages>                                            
                                     </td>
                                 </tr>    
-                                <tr>
-                                    <td class="specCriteriaTextLabelsRight">
-                                        <bean:message key="label.specialist"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;
-                                    </td>
-                                    <td class="specCriteriaTextLabels">
-                                        <html:text name="RegisterForm" property="userVO.referredCd" styleClass="criteriavalue" maxlength="50" size="40"  tabindex="6"/>&nbsp;
-                                        <html:messages id="error" message="true" property="errors.label.specialist">
-                                            <font color="red"><bean:write name="error"/></font>
-                                        </html:messages>                                            
-                                    </td>
-                                </tr>          
                                 <tr><td colspan="2"><hr></td></tr>
                                 <tr>
                                     <td class="specCriteriaTextLabelsRight" width="200">
@@ -272,8 +222,8 @@
                     </tr>
                 </html:form>
             </table>
-        </tr>
-    </td>
+        </td>
+    </tr>
 </table>
 <script type="text/javascript">
     document.getElementsByName ('userVO.username')[0].focus();
