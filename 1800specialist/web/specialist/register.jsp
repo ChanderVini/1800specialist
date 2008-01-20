@@ -182,7 +182,7 @@
                                         <bean:message key="label.zipcode"/>&nbsp;<font color="red">*</font>:&nbsp;&nbsp;
                                     </td>
                                     <td class="specCriteriaTextLabels">
-                                        <html:text name="RegisterForm" property="userVO.zipcode" styleClass="criteriavalue" maxlength="6" size="6"/>&nbsp;
+                                        <html:text name="RegisterForm" property="userVO.zipcode" styleClass="criteriavalue" maxlength="10" size="10"/>&nbsp;
                                         <html:messages id="error" message="true" property="errors.label.zipcode">
                                             <font color="red"><bean:write name="error"/></font>
                                         </html:messages>                                            

@@ -180,6 +180,10 @@ public class UserDAO {
             logger.error("Error Occured while extracting Database Conenction", dbexp);
             throw new CSSCSystemException (CSSC004E);
         } catch (SQLException sqlexp) {
+            int errorCode = sqlexp.getErrorCode();
+            if (errorCode == 1062) {
+                throw new CSSCApplicationException (CSSC015E, "");
+            }
             logger.error("Error occured while interacting with database", sqlexp);
             throw new CSSCSystemException (CSSC004E);
         } finally {
